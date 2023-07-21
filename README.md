@@ -7,6 +7,7 @@
 * Python
 * Django
 * Swagger
+* PostgreSQL
 * REST API
 * VK API
 
