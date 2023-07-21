@@ -4,6 +4,12 @@
 
 ## Технологии
 
+* Python
+* Django
+* Swagger
+* REST API
+* VK API
+
 ## Способ сборки
 
 ## APIv1 методы
