@@ -63,6 +63,7 @@ class ClubNews {
   id: number,
   title: string,
   sourceId: number,
-  sourceTitle: string
+  sourceTitle: string,
+// ????
 }
 ```
