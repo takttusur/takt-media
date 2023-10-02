@@ -4,8 +4,7 @@
 
 ## Технологии
 
-* Python
-* Django
+* .NET
 * Swagger
 * PostgreSQL
 * REST API
