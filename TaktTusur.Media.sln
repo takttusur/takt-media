@@ -1,14 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaktTusur.Media.Api", "TaktTusur.Media.Api\TaktTusur.Media.Api.csproj", "{65053BA7-11DB-4514-BF4C-CEF6AA3EA4C2}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34024.191
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaktTusur.Media.Api", "TaktTusur.Media.Api\TaktTusur.Media.Api.csproj", "{65053BA7-11DB-4514-BF4C-CEF6AA3EA4C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaktTusur.Media.Domain", "TaktTusur.Media.Domain\TaktTusur.Media.Domain.csproj", "{B498B9E1-A1F5-4976-9324-51B4CA97CC65}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaktTusur.Media.Domain", "TaktTusur.Media.Domain\TaktTusur.Media.Domain.csproj", "{B498B9E1-A1F5-4976-9324-51B4CA97CC65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaktTusur.Media.Domain.Tests", "TaktTusur.Media.Domain.Tests\TaktTusur.Media.Domain.Tests.csproj", "{83847824-EDE8-48E0-9318-112119F8B217}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaktTusur.Media.Domain.Tests", "TaktTusur.Media.Domain.Tests\TaktTusur.Media.Domain.Tests.csproj", "{83847824-EDE8-48E0-9318-112119F8B217}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaktTusur.Media.Infrastructure", "TaktTusur.Media.Infrastructure\TaktTusur.Media.Infrastructure.csproj", "{A28E07D4-8498-4A6C-A6C5-3FA81783EA67}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaktTusur.Media.Infrastructure", "TaktTusur.Media.Infrastructure\TaktTusur.Media.Infrastructure.csproj", "{A28E07D4-8498-4A6C-A6C5-3FA81783EA67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaktTusur.Media.Clients.VkApi", "TaktTusur.Media.Clients.VkApi\TaktTusur.Media.Clients.VkApi.csproj", "{A749A7C1-D5F0-4A7C-AF89-132877651CED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaktTusur.Media.Clients.VkApi", "TaktTusur.Media.Clients.VkApi\TaktTusur.Media.Clients.VkApi.csproj", "{A749A7C1-D5F0-4A7C-AF89-132877651CED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaktTusur.Media.BackgroundCrawler", "TaktTusur.Media.BackgroundCrawler\TaktTusur.Media.BackgroundCrawler.csproj", "{5D580B89-6E72-4281-BDDB-78E4B5F91D90}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,5 +41,15 @@ Global
 		{A749A7C1-D5F0-4A7C-AF89-132877651CED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A749A7C1-D5F0-4A7C-AF89-132877651CED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A749A7C1-D5F0-4A7C-AF89-132877651CED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D580B89-6E72-4281-BDDB-78E4B5F91D90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D580B89-6E72-4281-BDDB-78E4B5F91D90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D580B89-6E72-4281-BDDB-78E4B5F91D90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D580B89-6E72-4281-BDDB-78E4B5F91D90}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {42DD6DC6-6318-4FB8-B651-24095E5C4254}
 	EndGlobalSection
 EndGlobal
