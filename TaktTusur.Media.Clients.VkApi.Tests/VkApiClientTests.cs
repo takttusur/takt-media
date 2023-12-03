@@ -32,8 +32,15 @@ public class VkApiClientTests
     public async Task Test2()
     {
         var clientapi = new VkApiClient(_options, "takt_tusur");
-        var tr = await clientapi.GetPostsAsync(CancellationToken.None);
-        Assert.AreEqual(2397, tr.Count, "неправильное количестов постов");
+        var testr = await clientapi.GetPostsAsync(CancellationToken.None);
+        Assert.AreEqual(2404, testr.Count, "неправильное количестов постов");
+    }
 
+    [Test]
+    public async Task Test3()
+    {
+        var clientapi = new VkApiClient(_options, "takt_tusur");
+        var testr = await clientapi.GetPostsAsync(CancellationToken.None);
+        Assert.AreEqual(457265785, testr.Posts[0].PostAttachment[0].Photo.Id, "неправильный ID");
     }
 }

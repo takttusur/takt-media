@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,11 +9,20 @@ namespace TaktTusur.Media.Clients.VkApi
 {
     public class WallByIdRequest
     {
-        //TODO: сделать в camel, как я понял [JsonPropertyName("...")] работает для присылаемого JSON, а как сделать для запроса я пока не нашел
-        public string domain { get; set; }
-        public string access_token { get; set; }
-        public string v { get; set; }
-        public int count { get; set; }
-        public int extended { get; set; }
+        
+        [RequestProperty(Name = "domain")]
+        public string Domain { get; set; }
+
+        [RequestProperty(Name = "access_token")]
+        public string AccessToken { get; set; }
+
+        [RequestProperty(Name = "v")]
+        public string Version { get; set; }
+
+        [RequestProperty(Name = "count")]
+        public int Count { get; set; }
+
+        [RequestProperty(Name = "extended")]
+        public int Extended { get; set; }
     }
 }

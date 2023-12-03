@@ -1,23 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
 namespace TaktTusur.Media.Clients.VkApi
 {
     public class VkPost
     {
-        //TODO: реализовать эти поля (не понятно как работает дата в json, пример date: 1699412400)
-        /*
-            Дата время создания
-            Авторские заметки
-            Тип поста
-            Вложения
-            Текст
-            URL-ссылка на это сообщение на vk.com
-         */
+        public List<Post> Posts { get; set; } = new List<Post>();
         public int Count { get; set; }
-
+    }
+    public class Post 
+    {
+        public int PostDataTimeOfCreation { get; set; }
+        public Copyrights PostCopyrightNotes { get; set; } = new Copyrights ();   
+        public string PostType { get; set; }
+        public string PostText { get; set; }
+        public string PostURL { get; set; }
+        public List<Attachment> PostAttachment { get; set; } = new List<Attachment>();
     }
 }
