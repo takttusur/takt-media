@@ -1,7 +1,6 @@
 ﻿using RestSharp;
 using TaktTusur.Media.Clients.VkApi.WallByIdResponse;
 using TaktTusur.Media.Clients.VkApi.GroupInfoResponse;
-using System.Linq.Expressions;
 
 namespace TaktTusur.Media.Clients.VkApi;
 public class VkApiClient: IVkApiClient
