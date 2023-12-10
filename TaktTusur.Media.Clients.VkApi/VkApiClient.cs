@@ -1,4 +1,6 @@
 ﻿using RestSharp;
+using TaktTusur.Media.Clients.VkApi.WallByIdResponse;
+using TaktTusur.Media.Clients.VkApi.GroupInfoResponse;
 
 namespace TaktTusur.Media.Clients.VkApi;
 public class VkApiClient: IVkApiClient
@@ -9,6 +11,7 @@ public class VkApiClient: IVkApiClient
     private readonly GroupByIdRequest GroupRequest;
     private readonly WallByIdRequest WallRequest;
 
+    // Создание request(запросов) для группы(GroupRequest) и для стены группы(WallRequest)
     public VkApiClient(VkApiOptions options, string groupId)
     {
         _options=  options;
@@ -19,14 +22,14 @@ public class VkApiClient: IVkApiClient
 
         GroupRequest = new GroupByIdRequest()
         {
-            Version = "5.154",
+            Version = "5.199",
             AccessToken = _options.Key, 
             GroupId = groupId
         };
         
         WallRequest = new WallByIdRequest()
         {
-            Version = "5.154",
+            Version = "5.199",
             AccessToken = _options.Key,
             Domain = groupId,
             Count = 5,
@@ -34,7 +37,8 @@ public class VkApiClient: IVkApiClient
         };
 
     }
-        
+    
+    // Метод запрашивает информацию о группе вк по ее id, а после обрабатывает ответ и заносит данные в info
     public async Task<VkGroupInfo> GetGroupInfoAsync(CancellationToken cancellationToken)
     {
         
@@ -53,12 +57,15 @@ public class VkApiClient: IVkApiClient
             info.GroupPhoto200 = result.Response.Groups[0].Photo200;
             info.GroupIsClosed = result.Response.Groups[0].IsClosed;
         }
-        else Console.WriteLine("ошибка в блоке информации о группе");
+        else throw new Exception("ошибка в блоке информации о группе");
         
         return info;
     }
 
-     public async Task<VkPost> GetPostsAsync(CancellationToken cancellationToken)
+    // Метод запрашивает информацию о постах со стены группы вк по id группы,
+    // в количестве указанном в Сount в VkApiClient в WallRequest,
+    // а после обрабатывает ответ и заносит данные в TestResult
+    public async Task<VkPost> GetPostsAsync(CancellationToken cancellationToken)
      {
         //чтобы вытащить id группы
         var Group = new VkApiClient(_options, WallRequest.Domain);
@@ -229,7 +236,7 @@ public class VkApiClient: IVkApiClient
         else 
         {
             TestResult.Count = 10;
-            Console.WriteLine("ошибка в блоке посты");
+            throw new Exception("ошибка в блоке посты");
         }
 
         return TestResult;

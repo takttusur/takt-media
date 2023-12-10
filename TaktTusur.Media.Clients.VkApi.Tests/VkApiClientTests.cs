@@ -20,7 +20,7 @@ public class VkApiClientTests
     }
 
     [Test]
-    public async Task  Test1()
+    public async Task CheckingTitleVkGroup()
     {
         var clientapi = new VkApiClient(_options, "takt_tusur"); 
         var info = await clientapi.GetGroupInfoAsync(CancellationToken.None);
@@ -29,18 +29,18 @@ public class VkApiClientTests
     }
 
     [Test]
-    public async Task Test2()
+    public async Task CheckingQuantityOfPostsFromVkGroupWall ()
     {
-        var clientapi = new VkApiClient(_options, "takt_tusur");
-        var testr = await clientapi.GetPostsAsync(CancellationToken.None);
-        Assert.AreEqual(2404, testr.Count, "неправильное количестов постов");
+        var clientApi = new VkApiClient(_options, "takt_tusur");
+        var testResult = await clientApi.GetPostsAsync(CancellationToken.None);
+        Assert.AreEqual(2406, testResult.Count, "неправильное количестов постов");
     }
 
     [Test]
-    public async Task Test3()
+    public async Task CheckingPhotoIdFromAttachmentsFromVkGroupWallPost()
     {
-        var clientapi = new VkApiClient(_options, "takt_tusur");
-        var testr = await clientapi.GetPostsAsync(CancellationToken.None);
-        Assert.AreEqual(457265785, testr.Posts[0].PostAttachment[0].Photo.Id, "неправильный ID");
+        var clientApi = new VkApiClient(_options, "takt_tusur");
+        var testResult = await clientApi.GetPostsAsync(CancellationToken.None);
+        Assert.AreEqual(457265786, testResult.Posts[1].PostAttachment[0].Photo.Id, "неправильный ID");
     }
 }

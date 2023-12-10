@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+﻿using TaktTusur.Media.Clients.VkApi.WallByIdResponse;
 
 namespace TaktTusur.Media.Clients.VkApi
 {

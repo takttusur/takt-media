@@ -3,5 +3,4 @@
 public class VkApiOptions
 {
     public string Key { get; set; }
-
 }
