@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  takttusur.media.api:
+    image: ${DOCKER_REGISTRY-}takttusurmediaapi
+    build:
+      context: .
+      dockerfile: TaktTusur.Media.Api/Dockerfile
+
+  takttusur.media.backgroundcrawler:
+    image: ${DOCKER_REGISTRY-}takttusurmediabackgroundcrawler
+    build:
+      context: .
+      dockerfile: TaktTusur.Media.BackgroundCrawler/Dockerfile
+
