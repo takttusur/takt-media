@@ -3,9 +3,9 @@ using TaktTusur.Media.Clients.VkApi.WallByIdResponse;
 using TaktTusur.Media.Clients.VkApi.GroupInfoResponse;
 
 namespace TaktTusur.Media.Clients.VkApi;
+
 public class VkApiClient: IVkApiClient
 {
-   
     private readonly VkApiOptions _options;
     private readonly RestClientOptions _restClientOptions;
 
@@ -222,7 +222,6 @@ public class VkApiClient: IVkApiClient
                     }
 
                     wallPost.PostAttachment.Add(attachments);
-
                 }
 
                 testResult.Posts.Add(wallPost);

@@ -4,7 +4,6 @@ namespace TaktTusur.Media.Clients.VkApi
 {
     public class WallByIdRequest
     {
-        
         [RequestProperty(Name = "domain")]
         public string Domain { get; set; }
 

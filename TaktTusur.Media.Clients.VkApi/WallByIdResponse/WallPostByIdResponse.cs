@@ -10,5 +10,4 @@ namespace TaktTusur.Media.Clients.VkApi.WallByIdResponse
         [JsonPropertyName("error")]
         public Error WallPostError { get; set; }
     }
-
 }
