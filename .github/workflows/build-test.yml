@@ -25,11 +25,11 @@ jobs:
           context: ./
           file: ./TaktTusur.Media.Api/Dockerfile
           push: false
-          platforms: "linux/arm64,linux/amd64"
+          platforms: "linux/amd64"
       - name: Build Background Crawler
         uses: docker/build-push-action@v4
         with:
           context: ./
           file: ./TaktTusur.Media.BackgroundCrawler/Dockerfile
           push: false
-          platforms: "linux/arm64,linux/amd64"
+          platforms: "linux/amd64"
