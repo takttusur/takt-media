@@ -2,6 +2,8 @@
 
 public class VkGroupInfo
 {
+    #region Base
+
     /// <summary>
     /// Возвращает и задает Id сообщества.
     /// </summary>
@@ -41,4 +43,25 @@ public class VkGroupInfo
     /// Возвращает и задает URL главной фотографии в максимальном размере.
     /// </summary>
     public string GroupPhoto200 { get; set; }
+
+    #endregion
+
+    #region Optional
+
+    /// <summary>
+    /// Возвращает и задает дату начала события.
+    /// </summary>
+    public int StartDateTime { get; set; }
+
+    /// <summary>
+    /// Возвращает и задает дату окончания события.
+    /// </summary>
+    public int FinishDateTime { get; set; }
+
+    /// <summary>
+    /// Возвращает и задает описание группы.
+    /// </summary>
+    public string Description { get; set; }
+
+    #endregion
 }

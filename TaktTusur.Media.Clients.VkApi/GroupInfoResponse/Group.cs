@@ -4,6 +4,8 @@ namespace TaktTusur.Media.Clients.VkApi.GroupInfoResponse
 {
     public class Group
     {
+        #region Base
+
         [JsonPropertyName("id")]
         public int Id { get; set; }
 
@@ -27,5 +29,20 @@ namespace TaktTusur.Media.Clients.VkApi.GroupInfoResponse
 
         [JsonPropertyName("photo_200")]
         public string Photo200 { get; set; }
+
+        #endregion
+
+        #region Optional
+
+        [JsonPropertyName("start_date")]
+        public int StartDate { get; set; }
+
+        [JsonPropertyName("finish_date")]
+        public int FinishDate { get; set; }
+
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
+
+        #endregion
     }
 }

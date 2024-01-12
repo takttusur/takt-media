@@ -20,11 +20,6 @@ public class PublicEvent
     public string EventTitle { get; set; }
 
     /// <summary>
-    /// Возвращает и задает массив объектов, соответствующих медиаресурсам, прикреплённым к событию.
-    /// </summary>
-    public List<Attachment> EventAttachments { get; set; } = new List<Attachment>();
-
-    /// <summary>
     /// Возвращает и задает URL-ссылку на данное событие.
     /// </summary>
     public string EventURL { get; set; }
