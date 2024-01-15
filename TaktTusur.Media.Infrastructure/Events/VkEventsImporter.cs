@@ -7,7 +7,6 @@ public class VkEventsImporter : IVkEventsImporter, IVkApiClient
 {
     private VkApiClient _vkApiClient;
 
-    private List<string> _fields = new() { "start_date", "finish_date" };
 
     public VkEventsImporter(VkApiClient apiClient)
     {
@@ -35,11 +34,13 @@ public class VkEventsImporter : IVkEventsImporter, IVkApiClient
     {
         VkGroupInfo vkGroupInfo;
         List<PublicEvent> publicEvents = new();
+        List<string> _fields = new() { "start_date", "finish_date" };
 
         foreach (var post in vkPost.Posts.Where(p => p.PostType == "reply"))
             if ((vkGroupInfo = await _vkApiClient.GetGroupInfoAsync(post.PostCopyrightNotes.Id, cancellationToken, _fields)).GroupType == "event")
             {
-                PublicEvent publicEvent = new() { 
+                PublicEvent publicEvent = new()
+                {
                     EventStartDateTime = vkGroupInfo.StartDateTime,
                     EventEndDateTime = vkGroupInfo.FinishDateTime,
                     EventTitle = vkGroupInfo.Description,

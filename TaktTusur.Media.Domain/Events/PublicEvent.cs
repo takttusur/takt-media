@@ -15,9 +15,14 @@ public class PublicEvent
     public int EventEndDateTime { get; set; }
 
     /// <summary>
-    /// ¬озвращает и задает описание событи€
+    /// ¬озвращает и задает описание событи€.
     /// </summary>
     public string EventTitle { get; set; }
+
+    /// <summary>
+    /// ¬озвращает и задает медиаресурсы.
+    /// </summary>
+    public List<Attachment> Attachments { get; set; }
 
     /// <summary>
     /// ¬озвращает и задает URL-ссылку на данное событие.
