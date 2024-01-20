@@ -1,9 +1,18 @@
-using TaktTusur.Media.BackgroundCrawler;
+using Quartz;
+using TaktTusur.Media.BackgroundCrawler.QuartzJobs;
 
-IHost host = Host.CreateDefaultBuilder(args)
+var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services =>
     {
-        services.AddHostedService<Worker>();
+        services.AddQuartz((options) =>
+        {
+            options.AddJob<NewsFetchingQuartzJob>(JobKey.Create(nameof(NewsFetchingQuartzJob)));
+        });
+        services.AddQuartzHostedService((options) =>
+        {
+            options.WaitForJobsToComplete = true;
+            options.AwaitApplicationStarted = true;
+        });
     })
     .Build();
 

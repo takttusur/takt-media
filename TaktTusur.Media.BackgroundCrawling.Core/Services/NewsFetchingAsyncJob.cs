@@ -1,11 +1,15 @@
 using Microsoft.Extensions.Logging;
 using TaktTusur.Media.BackgroundCrawling.Core.Entities;
+using TaktTusur.Media.BackgroundCrawling.Core.Exceptions;
 using TaktTusur.Media.BackgroundCrawling.Core.Interfaces;
 using TaktTusur.Media.BackgroundCrawling.Core.Settings;
 using TaktTusur.Media.Domain.News;
 
 namespace TaktTusur.Media.BackgroundCrawling.Core.Services;
 
+/// <summary>
+/// The job is responsible for fetching news from source and save it to <see cref="IArticlesRepository"/>
+/// </summary>
 public class NewsFetchingAsyncJob : IAsyncJob
 {
 	private readonly NewsFetchingJobSettings _settings;
@@ -56,11 +60,21 @@ public class NewsFetchingAsyncJob : IAsyncJob
 				await BulkProcessArticles();
 			}
 		}
-		catch (HttpRequestException e)
+		catch (RemoteReadingException e)
 		{
-			
+			_logger.LogWarning(e, InterruptedMsg);
+			return JobResult.ErrorResult(e.Message);
 		}
-		
+		catch (RepositoryReadingException e)
+		{
+			_logger.LogError(e, InterruptedMsg);
+			return JobResult.ErrorResult(e.Message);
+		}
+		catch (RepositoryWritingException e)
+		{
+			_logger.LogError(e, InterruptedMsg);
+			return JobResult.ErrorResult(e.Message);
+		}
 		
 		_logger.LogDebug(FinishWorkingMsg);
 		return JobResult.SuccessResult();

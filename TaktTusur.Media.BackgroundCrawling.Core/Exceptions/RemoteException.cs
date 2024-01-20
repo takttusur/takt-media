@@ -1,6 +1,6 @@
 namespace TaktTusur.Media.BackgroundCrawling.Core.Exceptions;
 
-public class RemoteReadingException : RemoteException
+public class RemoteException : CoreException
 {
 	
 }
