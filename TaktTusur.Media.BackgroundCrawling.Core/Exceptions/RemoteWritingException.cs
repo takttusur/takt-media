@@ -1,5 +1,5 @@
 namespace TaktTusur.Media.BackgroundCrawling.Core.Exceptions;
 
-public class RemoteWritingException : Exception
+public class RemoteWritingException : RemoteException
 {
 }
