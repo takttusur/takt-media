@@ -13,11 +13,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaktTusur.Media.Infrastruct
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaktTusur.Media.Clients.VkApi", "TaktTusur.Media.Clients.VkApi\TaktTusur.Media.Clients.VkApi.csproj", "{A749A7C1-D5F0-4A7C-AF89-132877651CED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaktTusur.Media.BackgroundCrawler", "TaktTusur.Media.BackgroundCrawler\TaktTusur.Media.BackgroundCrawler.csproj", "{5D580B89-6E72-4281-BDDB-78E4B5F91D90}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaktTusur.Media.BackgroundCrawler.Worker", "TaktTusur.Media.BackgroundCrawler.Worker\TaktTusur.Media.BackgroundCrawler.Worker.csproj", "{5D580B89-6E72-4281-BDDB-78E4B5F91D90}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{F9123716-702C-4E70-9CBA-0117115ADCA7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaktTusur.Media.Clients.VkApi.Tests", "TaktTusur.Media.Clients.VkApi.Tests\TaktTusur.Media.Clients.VkApi.Tests.csproj", "{2018E6C0-542D-4E44-9D70-3AA7BABADAEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaktTusur.Media.BackgroundCrawling.Core", "TaktTusur.Media.BackgroundCrawling.Core\TaktTusur.Media.BackgroundCrawling.Core.csproj", "{767D22B5-0726-411B-878B-49472371EDDA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaktTusur.Media.BackgroundCrawling.Infrastructure", "TaktTusur.Media.BackgroundCrawling.Infrastructure\TaktTusur.Media.BackgroundCrawling.Infrastructure.csproj", "{7CF36185-9DED-46CC-9247-2979BA982BC9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +61,14 @@ Global
 		{F9123716-702C-4E70-9CBA-0117115ADCA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9123716-702C-4E70-9CBA-0117115ADCA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9123716-702C-4E70-9CBA-0117115ADCA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{767D22B5-0726-411B-878B-49472371EDDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{767D22B5-0726-411B-878B-49472371EDDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{767D22B5-0726-411B-878B-49472371EDDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{767D22B5-0726-411B-878B-49472371EDDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CF36185-9DED-46CC-9247-2979BA982BC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CF36185-9DED-46CC-9247-2979BA982BC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CF36185-9DED-46CC-9247-2979BA982BC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CF36185-9DED-46CC-9247-2979BA982BC9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
