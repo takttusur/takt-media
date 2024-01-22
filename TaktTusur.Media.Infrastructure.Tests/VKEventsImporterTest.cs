@@ -7,12 +7,14 @@ namespace TaktTusur.Media.Infrastructure.Tests
     public class VkEventsImporterTests
     {
         private VkApiOptions _options = new();
+        private VkApiClient _vkApiClient;
+        private VkEventsImporter _vkEventsImporter;
 
         public VkEventsImporterTests()
         {
             var builder = new ConfigurationBuilder().AddUserSecrets<VkEventsImporterTests>();
-
             var config = builder.Build();
+
             _options.Key = config["VkApiKey"];
         }
 
@@ -20,16 +22,16 @@ namespace TaktTusur.Media.Infrastructure.Tests
         [SetUp]
         public void Setup()
         {
-
+            _vkApiClient = new VkApiClient(_options);
+            _vkEventsImporter = new VkEventsImporter(_vkApiClient);
         }
 
         [Test]
         public async Task ImportAsync()
         {
-            var vkApiClient = new VkApiClient(_options);
-            var eventsImporter = new VkEventsImporter(vkApiClient);
-            var events = await eventsImporter.ImportAsync("takt_tusur", 10, CancellationToken.None);
-            Assert.That(events.Any());
+            var events = await _vkEventsImporter.ImportAsync("takt_tusur", CancellationToken.None, 10);
+
+            Assert.AreEqual(1, events.Count(), "Количество публичных событий, среди последних 10 постов - 1");
         }
     }
 }

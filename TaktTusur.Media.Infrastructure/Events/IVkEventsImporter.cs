@@ -4,5 +4,5 @@ namespace TaktTusur.Media.Infrastructure.Events;
 
 public interface IVkEventsImporter
 {
-    public Task<List<PublicEvent>> ImportAsync(string vkGroupId, int count, CancellationToken cancellationToken);
+    public Task<List<PublicEvent>> ImportAsync(string vkGroupId, CancellationToken cancellationToken, int count);
 }

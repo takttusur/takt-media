@@ -14,9 +14,9 @@ public class VkEventsImporter : IVkEventsImporter, IVkApiClient
     }
 
 
-    public async Task<List<PublicEvent>> ImportAsync(string groupId, int postsCount, CancellationToken cancellationToken)
+    public async Task<List<PublicEvent>> ImportAsync(string groupId, CancellationToken cancellationToken, int postsCount = 5)
     {
-        return await AnalyzeAsync(await GetPostsAsync(groupId, postsCount, cancellationToken), cancellationToken);
+        return await AnalyzeAsync(await GetPostsAsync(groupId, cancellationToken, postsCount), cancellationToken);
     }
 
     public async Task<VkGroupInfo> GetGroupInfoAsync(string groupId, CancellationToken cancellationToken, List<string> fields)
@@ -24,9 +24,9 @@ public class VkEventsImporter : IVkEventsImporter, IVkApiClient
         return await _vkApiClient.GetGroupInfoAsync(groupId, cancellationToken, fields);
     }
 
-    public async Task<VkPost> GetPostsAsync(string groupId, int count, CancellationToken cancellationToken)
+    public async Task<VkPost> GetPostsAsync(string groupId, CancellationToken cancellationToken, int count = 5)
     {
-        return await _vkApiClient.GetPostsAsync(groupId, count, cancellationToken);
+        return await _vkApiClient.GetPostsAsync(groupId, cancellationToken, count);
     }
 
 
@@ -37,20 +37,21 @@ public class VkEventsImporter : IVkEventsImporter, IVkApiClient
         List<string> _fields = new() { "start_date", "finish_date" };
 
         foreach (var post in vkPost.Posts.Where(p => p.PostAttachment.Any(t => t.Type == "event")))
-            if ((vkGroupInfo = await _vkApiClient.GetGroupInfoAsync(post.PostCopyrightNotes.Id.ToString(), cancellationToken, _fields)).GroupType == "event")
+        {
+            vkGroupInfo = await GetGroupInfoAsync(post.PostAttachment.FirstOrDefault(p => p.Type == "event").Event.Id.ToString(), cancellationToken, _fields);
+
+            PublicEvent publicEvent = new()
             {
-                PublicEvent publicEvent = new()
-                {
-                    EventStartDateTime = vkGroupInfo.StartDateTime,
-                    EventEndDateTime = vkGroupInfo.FinishDateTime,
-                    EventTitle = vkGroupInfo.Description,
-                    EventURL = post.PostURL,
-                    Attachments = new()
-                };
-                publicEvents.Add(publicEvent);
-            }
+                EventStartDateTime = vkGroupInfo.StartDateTime,
+                EventEndDateTime = vkGroupInfo.FinishDateTime,
+                EventTitle = vkGroupInfo.GroupName,
+                EventURL = post.PostURL,
+                Attachments = new()
+            };
+
+            publicEvents.Add(publicEvent);
+        }
 
         return publicEvents;
     }
-
 }

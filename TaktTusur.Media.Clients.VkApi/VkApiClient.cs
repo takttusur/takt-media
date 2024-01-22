@@ -51,6 +51,7 @@ public class VkApiClient : IVkApiClient
             {
                 info.StartDateTime = result.Response.Groups[0].StartDate;
                 info.FinishDateTime = result.Response.Groups[0].FinishDate;
+                info.Description = result.Response.Groups[0].Description;
             }
         }
         else throw new VkApiException(result.GroupInfoError.ErrorCode, result.GroupInfoError.ErrorMessage);
@@ -61,7 +62,7 @@ public class VkApiClient : IVkApiClient
     // Метод запрашивает информацию о постах со стены группы вк по id группы,
     // в количестве указанном в Сount в VkApiClient в WallRequest,
     // а после обрабатывает ответ и заносит данные в TestResult
-    public async Task<VkPost> GetPostsAsync(string groupId, int count, CancellationToken cancellationToken)
+    public async Task<VkPost> GetPostsAsync(string groupId, CancellationToken cancellationToken, int count = 5)
     {
         var wallRequest = new WallByIdRequest()
         {
@@ -225,6 +226,16 @@ public class VkApiClient : IVkApiClient
 
                             attachments.Video.FirstFrames.Add(FirstFrame);
                         }
+                    }
+                    else if (attachments.Type == "event")
+                    {
+                        attachments.Event.Id = postResult.Response.Items[i].Attachments[j].Event.Id;
+                        attachments.Event.EventStartDateTime = postResult.Response.Items[i].Attachments[j].Event.EventStartDateTime;
+                        attachments.Event.MemberStatus = postResult.Response.Items[i].Attachments[j].Event.MemberStatus;
+                        attachments.Event.IsFavorite = postResult.Response.Items[i].Attachments[j].Event.IsFavorite;
+                        attachments.Event.Address = postResult.Response.Items[i].Attachments[j].Event.Address;
+                        attachments.Event.Text = postResult.Response.Items[i].Attachments[j].Event.Text;
+                        attachments.Event.ButtonText = postResult.Response.Items[i].Attachments[j].Event.ButtonText;
                     }
 
                     wallPost.PostAttachment.Add(attachments);
