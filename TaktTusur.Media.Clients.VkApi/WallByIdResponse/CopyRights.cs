@@ -5,7 +5,7 @@ namespace TaktTusur.Media.Clients.VkApi.WallByIdResponse
     public class Copyrights
     {
         [JsonPropertyName("id")]
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         [JsonPropertyName("link")]
         public string Link { get; set; }
