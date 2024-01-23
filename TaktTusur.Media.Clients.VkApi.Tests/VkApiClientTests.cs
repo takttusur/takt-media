@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 using TaktTusur.Media.Clients.VkApi.Models;
 
@@ -26,6 +25,8 @@ namespace TaktTusur.Media.Clients.VkApi.Tests
             var info = await _client.GetGroupInfoAsync(groupId, CancellationToken.None);
 
             Assert.That(info.GroupName, Is.EqualTo(title), "Wrong group name");
+            Assert.That(info.StartDateTime, Is.Not.Null, "Wrong start date");
+            Assert.That(info.FinishDateTime, Is.Not.Null, "Wrong finish date");
         }
 
         [Test]
@@ -49,21 +50,21 @@ namespace TaktTusur.Media.Clients.VkApi.Tests
 
         [Test]
         [TestCase("takttusur.testevent000000000000")]
-        public async Task CheckingThrowingExceptionGetGroupInfo(string groupId)
+        public void CheckingThrowingExceptionGetGroupInfo(string groupId)
         {
             Assert.ThrowsAsync<VkApiException>(async () =>
             {
-                var info = await _client.GetGroupInfoAsync(groupId, CancellationToken.None);
+                var unused = await _client.GetGroupInfoAsync(groupId, CancellationToken.None);
             });
         }
 
         [Test]
         [TestCase("takttusur.testevent00000000000")]
-        public async Task CheckingThrowingExceptionGetPost(string groupId)
+        public void CheckingThrowingExceptionGetPost(string groupId)
         {
             Assert.ThrowsAsync<VkApiException>(async () =>
             {
-                var testResult = await _client.GetPostsAsync(groupId,1, CancellationToken.None);
+                var unused = await _client.GetPostsAsync(groupId,1, CancellationToken.None);
             });
         }
     }

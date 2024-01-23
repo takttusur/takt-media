@@ -14,5 +14,5 @@ public class GroupByIdRequest
     public string Version { get; set; }
 
     [RequestProperty(Name = "fields")]
-    public List<string> Fields { get; set; }
+    public string[] Fields { get; set; }
 }

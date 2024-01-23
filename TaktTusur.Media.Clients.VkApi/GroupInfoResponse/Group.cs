@@ -34,11 +34,18 @@ namespace TaktTusur.Media.Clients.VkApi.GroupInfoResponse
 
         #region Optional
 
+        /// <summary>
+        /// Для встреч содержат время начала встречи в формате unixtime.
+        /// Для публичных страниц содержит только start_date — дата основания в формате YYYYMMDD.
+        /// </summary>
         [JsonPropertyName("start_date")]
-        public int StartDate { get; set; }
+        public long StartDate { get; set; }
 
+        /// <summary>
+        /// Для встреч содержат время окончания встречи в формате unixtime.
+        /// </summary>
         [JsonPropertyName("finish_date")]
-        public int FinishDate { get; set; }
+        public long FinishDate { get; set; }
 
         [JsonPropertyName("description")]
         public string Description { get; set; }

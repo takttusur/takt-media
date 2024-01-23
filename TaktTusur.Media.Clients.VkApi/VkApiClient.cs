@@ -41,16 +41,12 @@ public class VkApiClient : IVkApiClient
             Version = "5.199",
             AccessToken = _options.Key,
             GroupId = groupId,
-            Fields = new List<string>()
-            {
-                "start_date",
-                "finish_date",
-                "description"
-            }
+            Fields = new string[] { "start_date", "finish_date", "description" }
         };
 
         var info = new VkGroupInfo();
         var client = new RestClient(_restClientOptions);
+        
         var result = await client.GetJsonAsync<GroupByIdResponse>("groups.getById", groupRequest, cancellationToken);
 
         if (result.GroupInfoError == null)
@@ -63,11 +59,13 @@ public class VkApiClient : IVkApiClient
             info.GroupPhoto100 = result.Response.Groups[0].Photo100;
             info.GroupPhoto200 = result.Response.Groups[0].Photo200;
             info.GroupIsClosed = result.Response.Groups[0].IsClosed;
-
+            
             if (info.GroupType != "event") return info;
             
-            info.StartDateTime = result.Response.Groups[0].StartDate;
-            info.FinishDateTime = result.Response.Groups[0].FinishDate;
+            info.StartDateTime = result.Response.Groups[0].StartDate != 0 ? 
+                DateTimeOffset.FromUnixTimeSeconds(result.Response.Groups[0].StartDate) : null;
+            info.FinishDateTime = result.Response.Groups[0].FinishDate != 0 ? 
+                DateTimeOffset.FromUnixTimeSeconds(result.Response.Groups[0].FinishDate) : null;
             info.Description = result.Response.Groups[0].Description;
         }
         else throw new VkApiException(result.GroupInfoError.ErrorCode, result.GroupInfoError.ErrorMessage);

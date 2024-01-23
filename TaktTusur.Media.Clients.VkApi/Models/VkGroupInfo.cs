@@ -51,12 +51,12 @@ public class VkGroupInfo
     /// <summary>
     /// Возвращает и задает дату начала события.
     /// </summary>
-    public int StartDateTime { get; set; }
+    public DateTimeOffset? StartDateTime { get; set; }
 
     /// <summary>
     /// Возвращает и задает дату окончания события.
     /// </summary>
-    public int FinishDateTime { get; set; }
+    public DateTimeOffset? FinishDateTime { get; set; }
 
     /// <summary>
     /// Возвращает и задает описание группы.
