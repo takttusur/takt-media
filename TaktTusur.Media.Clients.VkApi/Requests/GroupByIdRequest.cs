@@ -1,6 +1,6 @@
 ﻿using RestSharp;
 
-namespace TaktTusur.Media.Clients.VkApi;
+namespace TaktTusur.Media.Clients.VkApi.Requests;
 
 public class GroupByIdRequest
 {

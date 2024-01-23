@@ -1,4 +1,5 @@
 using TaktTusur.Media.Clients.VkApi;
+using TaktTusur.Media.Clients.VkApi.Models;
 using TaktTusur.Media.Domain.Events;
 
 namespace TaktTusur.Media.Infrastructure.Events;
@@ -16,17 +17,17 @@ public class VkEventsImporter : IVkEventsImporter, IVkApiClient
 
     public async Task<List<PublicEvent>> ImportAsync(string groupId, CancellationToken cancellationToken, int postsCount = 5)
     {
-        return await AnalyzeAsync(await GetPostsAsync(groupId, cancellationToken, postsCount), cancellationToken);
+        return await AnalyzeAsync(await GetPostsAsync(groupId, postsCount, cancellationToken), cancellationToken);
     }
 
-    public async Task<VkGroupInfo> GetGroupInfoAsync(string groupId, CancellationToken cancellationToken, List<string> fields)
+    public async Task<VkGroupInfo> GetGroupInfoAsync(string groupId, CancellationToken cancellationToken)
     {
-        return await _vkApiClient.GetGroupInfoAsync(groupId, cancellationToken, fields);
+        return await _vkApiClient.GetGroupInfoAsync(groupId, cancellationToken);
     }
 
-    public async Task<VkPost> GetPostsAsync(string groupId, CancellationToken cancellationToken, int count = 5)
+    public async Task<VkPost> GetPostsAsync(string groupId, int maxPosts, CancellationToken cancellationToken)
     {
-        return await _vkApiClient.GetPostsAsync(groupId, cancellationToken, count);
+        return await _vkApiClient.GetPostsAsync(groupId, maxPosts, cancellationToken);
     }
 
 
@@ -34,11 +35,10 @@ public class VkEventsImporter : IVkEventsImporter, IVkApiClient
     {
         VkGroupInfo vkGroupInfo;
         List<PublicEvent> publicEvents = new();
-        List<string> _fields = new() { "start_date", "finish_date" };
 
         foreach (var post in vkPost.Posts.Where(p => p.PostAttachment.Any(t => t.Type == "event")))
         {
-            vkGroupInfo = await GetGroupInfoAsync(post.PostAttachment.FirstOrDefault(p => p.Type == "event").Event.Id.ToString(), cancellationToken, _fields);
+            vkGroupInfo = await GetGroupInfoAsync(post.PostAttachment.FirstOrDefault(p => p.Type == "event").Event.Id.ToString(), cancellationToken);
 
             PublicEvent publicEvent = new()
             {

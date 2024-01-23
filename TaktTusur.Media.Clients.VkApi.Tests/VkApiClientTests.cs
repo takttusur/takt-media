@@ -1,68 +1,70 @@
 using Microsoft.Extensions.Configuration;
+using NUnit.Framework;
+using TaktTusur.Media.Clients.VkApi.Models;
 
-namespace TaktTusur.Media.Clients.VkApi.Tests;
-
-public class VkApiClientTests
+namespace TaktTusur.Media.Clients.VkApi.Tests
 {
-    private VkApiOptions _options = new VkApiOptions();
-
-    public VkApiClientTests()
+    [TestFixture]
+    public class VkApiClientTests
     {
-        var builder = new ConfigurationBuilder().AddUserSecrets<VkApiClientTests>();
-        var config = builder.Build();
-
-        _options.Key = config["VkApiKey"];
-    }
-    [SetUp]
-    public void Setup()
-    {
-    }
-
-    [Test]
-    public async Task CheckingTitleVkGroup()
-    {
-        var clientApi = new VkApiClient(_options); 
-        var info = await clientApi.GetGroupInfoAsync("takt_tusur", CancellationToken.None);
-
-        Assert.AreEqual("Туристско-Альпинистский клуб ТУСУРа (ТАКТ)", info.GroupName, "неправильное название группы");
-    }
-
-    [Test]
-    public async Task CheckingQuantityOfPostsFromVkGroupWall()
-    {
-        var clientApi = new VkApiClient(_options);
-        var testResult = await clientApi.GetPostsAsync("takt_tusur", CancellationToken.None, 5);
-
-        Assert.AreEqual(2413, testResult.Count, "неправильное количестов постов");
-    }
-
-    [Test]
-    public async Task CheckingPhotoIdFromAttachmentsFromVkGroupWallPost()
-    {
-        var clientApi = new VkApiClient(_options);
-        var testResult = await clientApi.GetPostsAsync("takt_tusur", CancellationToken.None, 5);
-
-        Assert.AreEqual(457265786, testResult.Posts[1].PostAttachment[0].Photo.Id, "неправильный ID");
-    }
-    
-    [Test]
-    public async Task CheckingThrowingExceptionGetGroupInfo()
-    {
-        var clientApi = new VkApiClient(_options);
-
-        Assert.ThrowsAsync<VkApiException>(async () =>
+        private readonly VkApiClient _client;
+        
+        public VkApiClientTests()
         {
-            var info = await clientApi.GetGroupInfoAsync("takttusur", CancellationToken.None);
-        });
-    }
+            var config = TestsConfiguration.FromUserSecrets();
 
-    [Test]
-    public async Task CheckingThrowingExceptionGetPost()
-    {
-        var clientApi = new VkApiClient(_options);
-        Assert.ThrowsAsync<VkApiException>(async () =>
+            _client = new VkApiClient(new VkApiOptions()
+            {
+                Key = config.VkApiKey
+            });
+        }
+
+        [Test]
+        [TestCase("takttusur.testevent", "TaktTusur test event")]
+        public async Task CheckingTitleVkGroup(string groupId, string title)
         {
-            var testResult = await clientApi.GetPostsAsync("takttusur", CancellationToken.None, 5);
-        });
+            var info = await _client.GetGroupInfoAsync(groupId, CancellationToken.None);
+
+            Assert.That(info.GroupName, Is.EqualTo(title), "Wrong group name");
+        }
+
+        [Test]
+        [TestCase("takttusur.testevent", 3)]
+        public async Task CheckingQuantityOfPostsFromVkGroupWall(string groupId, int numberOfPosts)
+        {
+            
+            var testResult = await _client.GetPostsAsync(groupId, 1, CancellationToken.None);
+
+            Assert.That(testResult.Count, Is.EqualTo(numberOfPosts), "Wrong total items count");
+        }
+
+        [Test]
+        [TestCase("takttusur.testevent")]
+        public async Task CheckingPhotoIdFromAttachmentsFromVkGroupWallPost(string groupId)
+        {
+            var testResult = await _client.GetPostsAsync(groupId, 1, CancellationToken.None);
+
+            Assert.That(testResult.Posts[0].PostAttachment[0].Type, Is.EqualTo("photo"), "Wrong type of first attachment");
+        }
+
+        [Test]
+        [TestCase("takttusur.testevent000000000000")]
+        public async Task CheckingThrowingExceptionGetGroupInfo(string groupId)
+        {
+            Assert.ThrowsAsync<VkApiException>(async () =>
+            {
+                var info = await _client.GetGroupInfoAsync(groupId, CancellationToken.None);
+            });
+        }
+
+        [Test]
+        [TestCase("takttusur.testevent00000000000")]
+        public async Task CheckingThrowingExceptionGetPost(string groupId)
+        {
+            Assert.ThrowsAsync<VkApiException>(async () =>
+            {
+                var testResult = await _client.GetPostsAsync(groupId,1, CancellationToken.None);
+            });
+        }
     }
 }

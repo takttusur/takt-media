@@ -1,5 +1,7 @@
 ﻿using RestSharp;
 using TaktTusur.Media.Clients.VkApi.GroupInfoResponse;
+using TaktTusur.Media.Clients.VkApi.Models;
+using TaktTusur.Media.Clients.VkApi.Requests;
 using TaktTusur.Media.Clients.VkApi.WallByIdResponse;
 
 namespace TaktTusur.Media.Clients.VkApi;
@@ -8,8 +10,11 @@ public class VkApiClient : IVkApiClient
 {
     private readonly VkApiOptions _options;
     private readonly RestClientOptions _restClientOptions;
-
-    // Создание request(запросов) для группы(GroupRequest) и для стены группы(WallRequest)
+    
+    /// <summary>
+    /// Создание request(запросов) для группы(GroupRequest) и для стены группы(WallRequest)
+    /// </summary>
+    /// <param name="options"></param>
     public VkApiClient(VkApiOptions options)
     {
         _options = options;
@@ -21,15 +26,27 @@ public class VkApiClient : IVkApiClient
         };
     }
 
-    // Метод запрашивает информацию о группе вк по ее id, а после обрабатывает ответ и заносит данные в info
-    public async Task<VkGroupInfo> GetGroupInfoAsync(string groupId, CancellationToken cancellationToken, List<string> fields = null)
+    /// <summary>
+    /// Метод запрашивает информацию о группе вк по ее id, а после обрабатывает ответ и заносит данные в info
+    /// </summary>
+    /// <param name="groupId"></param>
+    /// <param name="cancellationToken"></param>
+    /// <param name="fields"></param>
+    /// <returns></returns>
+    /// <exception cref="VkApiException"></exception>
+    public async Task<VkGroupInfo> GetGroupInfoAsync(string groupId, CancellationToken cancellationToken)
     {
         var groupRequest = new GroupByIdRequest()
         {
             Version = "5.199",
             AccessToken = _options.Key,
             GroupId = groupId,
-            Fields = fields
+            Fields = new List<string>()
+            {
+                "start_date",
+                "finish_date",
+                "description"
+            }
         };
 
         var info = new VkGroupInfo();
@@ -47,29 +64,33 @@ public class VkApiClient : IVkApiClient
             info.GroupPhoto200 = result.Response.Groups[0].Photo200;
             info.GroupIsClosed = result.Response.Groups[0].IsClosed;
 
-            if (info.GroupType == "event")
-            {
-                info.StartDateTime = result.Response.Groups[0].StartDate;
-                info.FinishDateTime = result.Response.Groups[0].FinishDate;
-                info.Description = result.Response.Groups[0].Description;
-            }
+            if (info.GroupType != "event") return info;
+            
+            info.StartDateTime = result.Response.Groups[0].StartDate;
+            info.FinishDateTime = result.Response.Groups[0].FinishDate;
+            info.Description = result.Response.Groups[0].Description;
         }
         else throw new VkApiException(result.GroupInfoError.ErrorCode, result.GroupInfoError.ErrorMessage);
 
         return info;
     }
 
-    // Метод запрашивает информацию о постах со стены группы вк по id группы,
-    // в количестве указанном в Сount в VkApiClient в WallRequest,
-    // а после обрабатывает ответ и заносит данные в TestResult
-    public async Task<VkPost> GetPostsAsync(string groupId, CancellationToken cancellationToken, int count = 5)
+    /// <summary>
+    /// Метод запрашивает информацию о постах со стены группы VK по ID группы
+    /// </summary>
+    /// <param name="groupId"></param>
+    /// <param name="maxPosts"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    /// <exception cref="VkApiException"></exception>
+    public async Task<VkPost> GetPostsAsync(string groupId, int maxPosts, CancellationToken cancellationToken)
     {
         var wallRequest = new WallByIdRequest()
         {
             Version = "5.199",
             AccessToken = _options.Key,
             Domain = groupId,
-            Count = count,
+            Count = maxPosts,
             Extended = 1
         };
 

@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using TaktTusur.Media.Clients.VkApi;
+using TaktTusur.Media.Clients.VkApi.Models;
 using TaktTusur.Media.Infrastructure.Events;
 
 namespace TaktTusur.Media.Infrastructure.Tests
@@ -31,7 +32,7 @@ namespace TaktTusur.Media.Infrastructure.Tests
         {
             var events = await _vkEventsImporter.ImportAsync("takt_tusur", CancellationToken.None, 10);
 
-            Assert.AreEqual(1, events.Count(), "Количество публичных событий, среди последних 10 постов - 1");
+            Assert.AreEqual(1, events.Count(), "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 10 пїЅпїЅпїЅпїЅпїЅпїЅ - 1");
         }
     }
 }
