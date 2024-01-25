@@ -1,11 +1,11 @@
 ﻿namespace TaktTusur.Media.Clients.VkApi.Models
 {
-    public class VkPost
+    public class VkPosts
     {
         /// <summary>
         /// Список запрошенных записей
         /// </summary>
-        public List<Post> Posts { get; set; } = new List<Post>();
+        public List<WallPost> Posts { get; set; } = new List<WallPost>();
 
         /// <summary>
         /// Общее количество записей в группе/событии, который подходят под фильтр

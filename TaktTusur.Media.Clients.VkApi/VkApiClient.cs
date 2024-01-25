@@ -81,7 +81,7 @@ public class VkApiClient : IVkApiClient
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     /// <exception cref="VkApiException"></exception>
-    public async Task<VkPost> GetPostsAsync(string groupId, int maxPosts, CancellationToken cancellationToken)
+    public async Task<VkPosts> GetPostsAsync(string groupId, int maxPosts, CancellationToken cancellationToken)
     {
         var wallRequest = new WallByIdRequest()
         {
@@ -92,180 +92,226 @@ public class VkApiClient : IVkApiClient
             Extended = 1
         };
 
-        var testResult = new VkPost();
+        var testResult = new VkPosts();
         var client = new RestClient(_restClientOptions);
         var postResult = await client.GetJsonAsync<WallPostByIdResponse>("wall.get", wallRequest, cancellationToken);
 
-        if (postResult.WallPostError == null)
-        {
-            for (int i = 0; i < postResult.Response.Items.Count; i++)
+        if (postResult?.WallPostError != null)
+            throw new VkApiException(postResult.WallPostError.ErrorCode, postResult.WallPostError.ErrorMessage);
+        
+        if (postResult?.Response?.Items == null)
+            return new VkPosts()
             {
-                var wallPost = new Post
-                {
-                    PostId = postResult.Response.Groups[0].Id,
-                    PostText = postResult.Response.Items[i].Text,
-                    PostDataTimeOfCreation = postResult.Response.Items[i].Date,
-                    PostType = postResult.Response.Items[i].Type,
-                };
-                wallPost.PostURL = "https://vk.com/public" + wallPost.PostId + "?w=wall-" + wallPost.PostId + "_" + postResult.Response.Items[i].Id;
+                Posts = new List<WallPost>(),
+                Count = 0
+            };
+        
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+        foreach (var t in postResult?.Response?.Items)
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+        {
+            var wallPost = MapPostDtoToWallPost(t);
 
-                wallPost.PostCopyrightNotes.Id = postResult.Response.Items[i].Copyrights.Id;
-                wallPost.PostCopyrightNotes.Link = postResult.Response.Items[i].Copyrights.Link;
-                wallPost.PostCopyrightNotes.Name = postResult.Response.Items[i].Copyrights.Name;
-                wallPost.PostCopyrightNotes.Type = postResult.Response.Items[i].Copyrights.Type;
-
-                for (int j = 0; j < postResult.Response.Items[i].Attachments.Count; j++)
-                {
-                    var attachments = new Attachment
-                    {
-                        Type = postResult.Response.Items[i].Attachments[j].Type,
-                    };
-
-                    if (attachments.Type == "photo")
-                    {
-                        attachments.Photo.AlbumId = postResult.Response.Items[i].Attachments[j].Photo.AlbumId;
-                        attachments.Photo.Date = postResult.Response.Items[i].Attachments[j].Photo.Date;
-                        attachments.Photo.Id = postResult.Response.Items[i].Attachments[j].Photo.Id;
-                        attachments.Photo.OwnerId = postResult.Response.Items[i].Attachments[j].Photo.OwnerId;
-                        attachments.Photo.AccessKey = postResult.Response.Items[i].Attachments[j].Photo.AccessKey;
-                        attachments.Photo.Text = postResult.Response.Items[i].Attachments[j].Photo.Text;
-                        attachments.Photo.UserId = postResult.Response.Items[i].Attachments[j].Photo.UserId;
-
-                        for (int k = 0; k < postResult.Response.Items[i].Attachments[j].Photo.Sizes.Count; k++)
-                        {
-                            var Size = new Size
-                            {
-                                Height = postResult.Response.Items[i].Attachments[j].Photo.Sizes[k].Height,
-                                Width = postResult.Response.Items[i].Attachments[j].Photo.Sizes[k].Width,
-                                Type = postResult.Response.Items[i].Attachments[j].Photo.Sizes[k].Type,
-                                Url = postResult.Response.Items[i].Attachments[j].Photo.Sizes[k].Url,
-                            };
-
-                            attachments.Photo.Sizes.Add(Size);
-                        }
-                    }
-
-                    else if (attachments.Type == "link")
-                    {
-                        attachments.Link.Url = postResult.Response.Items[i].Attachments[j].Link.Url;
-                        attachments.Link.Caption = postResult.Response.Items[i].Attachments[j].Link.Caption;
-                        attachments.Link.Description = postResult.Response.Items[i].Attachments[j].Link.Description;
-                        attachments.Link.Title = postResult.Response.Items[i].Attachments[j].Link.Title;
-                    }
-                    else if (attachments.Type == "doc")
-                    {
-                        attachments.Doc.Id = postResult.Response.Items[i].Attachments[j].Doc.Id;
-                        attachments.Doc.OwnerId = postResult.Response.Items[i].Attachments[j].Doc.OwnerId;
-                        attachments.Doc.Title = postResult.Response.Items[i].Attachments[j].Doc.Title;
-                        attachments.Doc.Size = postResult.Response.Items[i].Attachments[j].Doc.Size;
-                        attachments.Doc.Ext = postResult.Response.Items[i].Attachments[j].Doc.Ext;
-                        attachments.Doc.Date = postResult.Response.Items[i].Attachments[j].Doc.Date;
-                        attachments.Doc.Type = postResult.Response.Items[i].Attachments[j].Doc.Type;
-                        attachments.Doc.Url = postResult.Response.Items[i].Attachments[j].Doc.Url;
-                        attachments.Doc.IsUnsafe = postResult.Response.Items[i].Attachments[j].Doc.IsUnsafe;
-                        attachments.Doc.AccessKey = postResult.Response.Items[i].Attachments[j].Doc.AccessKey;
-                    }
-                    else if (attachments.Type == "album")
-                    {
-                        attachments.Album.Created = postResult.Response.Items[i].Attachments[j].Album.Created;
-                        attachments.Album.Id = postResult.Response.Items[i].Attachments[j].Album.Id;
-                        attachments.Album.OwnerId = postResult.Response.Items[i].Attachments[j].Album.OwnerId;
-                        attachments.Album.Size = postResult.Response.Items[i].Attachments[j].Album.Size;
-                        attachments.Album.Title = postResult.Response.Items[i].Attachments[j].Album.Title;
-                        attachments.Album.Updated = postResult.Response.Items[i].Attachments[j].Album.Updated;
-                        attachments.Album.Description = postResult.Response.Items[i].Attachments[j].Album.Description;
-
-                        attachments.Album.Thumb.AlbumId = postResult.Response.Items[i].Attachments[j].Album.Thumb.AlbumId;
-                        attachments.Album.Thumb.Date = postResult.Response.Items[i].Attachments[j].Album.Thumb.Date;
-                        attachments.Album.Thumb.Id = postResult.Response.Items[i].Attachments[j].Album.Thumb.Id;
-                        attachments.Album.Thumb.OwnerId = postResult.Response.Items[i].Attachments[j].Album.Thumb.OwnerId;
-                        attachments.Album.Thumb.AccessKey = postResult.Response.Items[i].Attachments[j].Album.Thumb.AccessKey;
-                        attachments.Album.Thumb.Text = postResult.Response.Items[i].Attachments[j].Album.Thumb.Text;
-                        attachments.Album.Thumb.UserId = postResult.Response.Items[i].Attachments[j].Album.Thumb.UserId;
-                        attachments.Album.Thumb.WebViewToken = postResult.Response.Items[i].Attachments[j].Album.Thumb.WebViewToken;
-                        attachments.Album.Thumb.HasTags = postResult.Response.Items[i].Attachments[j].Album.Thumb.HasTags;
-
-                        for (int k = 0; k < postResult.Response.Items[i].Attachments[j].Album.Thumb.Sizes.Count; k++)
-                        {
-                            var Size = new Size
-                            {
-                                Height = postResult.Response.Items[i].Attachments[j].Album.Thumb.Sizes[k].Height,
-                                Width = postResult.Response.Items[i].Attachments[j].Album.Thumb.Sizes[k].Width,
-                                Type = postResult.Response.Items[i].Attachments[j].Album.Thumb.Sizes[k].Type,
-                                Url = postResult.Response.Items[i].Attachments[j].Album.Thumb.Sizes[k].Url,
-                            };
-
-                            attachments.Album.Thumb.Sizes.Add(Size);
-                        }
-                    }
-                    else if (attachments.Type == "video")
-                    {
-                        attachments.Video.Id = postResult.Response.Items[i].Attachments[j].Video.Id;
-                        attachments.Video.OwnerId = postResult.Response.Items[i].Attachments[j].Video.OwnerId;
-                        attachments.Video.Title = postResult.Response.Items[i].Attachments[j].Video.Title;
-                        attachments.Video.Description = postResult.Response.Items[i].Attachments[j].Video.Description;
-                        attachments.Video.Duration = postResult.Response.Items[i].Attachments[j].Video.Duration;
-                        attachments.Video.Date = postResult.Response.Items[i].Attachments[j].Video.Date;
-                        attachments.Video.AddingDate = postResult.Response.Items[i].Attachments[j].Video.AddingDate;
-                        attachments.Video.Views = postResult.Response.Items[i].Attachments[j].Video.Views;
-                        attachments.Video.ResponseType = postResult.Response.Items[i].Attachments[j].Video.ResponseType;
-                        attachments.Video.AccessKey = postResult.Response.Items[i].Attachments[j].Video.AccessKey;
-                        attachments.Video.CanLike = postResult.Response.Items[i].Attachments[j].Video.CanLike;
-                        attachments.Video.CanRepost = postResult.Response.Items[i].Attachments[j].Video.CanRepost;
-                        attachments.Video.CanSubscribe = postResult.Response.Items[i].Attachments[j].Video.CanSubscribe;
-                        attachments.Video.CanAddToFaves = postResult.Response.Items[i].Attachments[j].Video.CanAddToFaves;
-                        attachments.Video.CanAdd = postResult.Response.Items[i].Attachments[j].Video.CanAdd;
-                        attachments.Video.Comments = postResult.Response.Items[i].Attachments[j].Video.Comments;
-                        attachments.Video.TrackCode = postResult.Response.Items[i].Attachments[j].Video.TrackCode;
-                        attachments.Video.Type = postResult.Response.Items[i].Attachments[j].Video.Type;
-                        attachments.Video.Platform = postResult.Response.Items[i].Attachments[j].Video.Platform;
-                        attachments.Video.CanDislike = postResult.Response.Items[i].Attachments[j].Video.CanDislike;
-
-                        for (int k = 0; k < postResult.Response.Items[i].Attachments[j].Video.Images.Count; k++)
-                        {
-                            var Image = new Image
-                            {
-                                Height = postResult.Response.Items[i].Attachments[j].Video.Images[k].Height,
-                                Width = postResult.Response.Items[i].Attachments[j].Video.Images[k].Width,
-                                WithPadding = postResult.Response.Items[i].Attachments[j].Video.Images[k].WithPadding,
-                                Url = postResult.Response.Items[i].Attachments[j].Video.Images[k].Url,
-                            };
-
-                            attachments.Video.Images.Add(Image);
-                        }
-
-                        for (int k = 0; k < postResult.Response.Items[i].Attachments[j].Video.FirstFrames.Count; k++)
-                        {
-                            var FirstFrame = new FirstFrame
-                            {
-                                Height = postResult.Response.Items[i].Attachments[j].Video.FirstFrames[k].Height,
-                                Width = postResult.Response.Items[i].Attachments[j].Video.FirstFrames[k].Width,
-                                Url = postResult.Response.Items[i].Attachments[j].Video.FirstFrames[k].Url,
-                            };
-
-                            attachments.Video.FirstFrames.Add(FirstFrame);
-                        }
-                    }
-                    else if (attachments.Type == "event")
-                    {
-                        attachments.Event.Id = postResult.Response.Items[i].Attachments[j].Event.Id;
-                        attachments.Event.EventStartDateTime = postResult.Response.Items[i].Attachments[j].Event.EventStartDateTime;
-                        attachments.Event.MemberStatus = postResult.Response.Items[i].Attachments[j].Event.MemberStatus;
-                        attachments.Event.IsFavorite = postResult.Response.Items[i].Attachments[j].Event.IsFavorite;
-                        attachments.Event.Address = postResult.Response.Items[i].Attachments[j].Event.Address;
-                        attachments.Event.Text = postResult.Response.Items[i].Attachments[j].Event.Text;
-                        attachments.Event.ButtonText = postResult.Response.Items[i].Attachments[j].Event.ButtonText;
-                    }
-
-                    wallPost.PostAttachment.Add(attachments);
-                }
-
-                testResult.Posts.Add(wallPost);
-                testResult.Count = postResult.Response.Count;
-            }
+            testResult.Posts.Add(wallPost);
+            testResult.Count = postResult.Response.Count;
         }
-        else throw new VkApiException(postResult.WallPostError.ErrorCode, postResult.WallPostError.ErrorMessage);
 
         return testResult;
+    }
+
+    private WallPost MapPostDtoToWallPost(PostDto t)
+    {
+        var wallPost = new WallPost
+        {
+            Id = t.Id,
+            SourceId = Math.Abs(t.OwnerId),
+            PostText = t.Text,
+            CreatedAt = DateTimeOffset.FromUnixTimeSeconds(t.Date),
+            PostType = GetPostTypeFromString(t.Type),
+        };
+        wallPost.PostURL = $"https://vk.com/wall-{wallPost.SourceId}_{wallPost.Id}";
+
+        wallPost.PostCopyrightNotes.Id = t.Copyrights.Id;
+        wallPost.PostCopyrightNotes.Link = t.Copyrights.Link;
+        wallPost.PostCopyrightNotes.Name = t.Copyrights.Name;
+        wallPost.PostCopyrightNotes.Type = t.Copyrights.Type;
+
+        foreach (var attachment in t.Attachments)
+        {
+            var attachments = new Attachment
+            {
+                Type = attachment.Type,
+            };
+
+            switch (attachments.Type)
+            {
+                case "photo":
+                {
+                    attachments.Photo.AlbumId = attachment.Photo.AlbumId;
+                    attachments.Photo.Date = attachment.Photo.Date;
+                    attachments.Photo.Id = attachment.Photo.Id;
+                    attachments.Photo.OwnerId = attachment.Photo.OwnerId;
+                    attachments.Photo.AccessKey = attachment.Photo.AccessKey;
+                    attachments.Photo.Text = attachment.Photo.Text;
+                    attachments.Photo.UserId = attachment.Photo.UserId;
+
+                    for (int k = 0; k < attachment.Photo.Sizes.Count; k++)
+                    {
+                        var size = new Size
+                        {
+                            Height = attachment.Photo.Sizes[k].Height,
+                            Width = attachment.Photo.Sizes[k].Width,
+                            Type = attachment.Photo.Sizes[k].Type,
+                            Url = attachment.Photo.Sizes[k].Url,
+                        };
+
+                        attachments.Photo.Sizes.Add(size);
+                    }
+
+                    break;
+                }
+                case "link":
+                    attachments.Link.Url = attachment.Link.Url;
+                    attachments.Link.Caption = attachment.Link.Caption;
+                    attachments.Link.Description = attachment.Link.Description;
+                    attachments.Link.Title = attachment.Link.Title;
+                    break;
+                case "doc":
+                    attachments.Doc.Id = attachment.Doc.Id;
+                    attachments.Doc.OwnerId = attachment.Doc.OwnerId;
+                    attachments.Doc.Title = attachment.Doc.Title;
+                    attachments.Doc.Size = attachment.Doc.Size;
+                    attachments.Doc.Ext = attachment.Doc.Ext;
+                    attachments.Doc.Date = attachment.Doc.Date;
+                    attachments.Doc.Type = attachment.Doc.Type;
+                    attachments.Doc.Url = attachment.Doc.Url;
+                    attachments.Doc.IsUnsafe = attachment.Doc.IsUnsafe;
+                    attachments.Doc.AccessKey = attachment.Doc.AccessKey;
+                    break;
+                case "album":
+                {
+                    attachments.Album.Created = attachment.Album.Created;
+                    attachments.Album.Id = attachment.Album.Id;
+                    attachments.Album.OwnerId = attachment.Album.OwnerId;
+                    attachments.Album.Size = attachment.Album.Size;
+                    attachments.Album.Title = attachment.Album.Title;
+                    attachments.Album.Updated = attachment.Album.Updated;
+                    attachments.Album.Description = attachment.Album.Description;
+
+                    attachments.Album.Thumb.AlbumId = attachment.Album.Thumb.AlbumId;
+                    attachments.Album.Thumb.Date = attachment.Album.Thumb.Date;
+                    attachments.Album.Thumb.Id = attachment.Album.Thumb.Id;
+                    attachments.Album.Thumb.OwnerId = attachment.Album.Thumb.OwnerId;
+                    attachments.Album.Thumb.AccessKey = attachment.Album.Thumb.AccessKey;
+                    attachments.Album.Thumb.Text = attachment.Album.Thumb.Text;
+                    attachments.Album.Thumb.UserId = attachment.Album.Thumb.UserId;
+                    attachments.Album.Thumb.WebViewToken = attachment.Album.Thumb.WebViewToken;
+                    attachments.Album.Thumb.HasTags = attachment.Album.Thumb.HasTags;
+
+                    for (int k = 0; k < attachment.Album.Thumb.Sizes.Count; k++)
+                    {
+                        var size = new Size
+                        {
+                            Height = attachment.Album.Thumb.Sizes[k].Height,
+                            Width = attachment.Album.Thumb.Sizes[k].Width,
+                            Type = attachment.Album.Thumb.Sizes[k].Type,
+                            Url = attachment.Album.Thumb.Sizes[k].Url,
+                        };
+
+                        attachments.Album.Thumb.Sizes.Add(size);
+                    }
+
+                    break;
+                }
+                case "video":
+                {
+                    attachments.Video.Id = attachment.Video.Id;
+                    attachments.Video.OwnerId = attachment.Video.OwnerId;
+                    attachments.Video.Title = attachment.Video.Title;
+                    attachments.Video.Description = attachment.Video.Description;
+                    attachments.Video.Duration = attachment.Video.Duration;
+                    attachments.Video.Date = attachment.Video.Date;
+                    attachments.Video.AddingDate = attachment.Video.AddingDate;
+                    attachments.Video.Views = attachment.Video.Views;
+                    attachments.Video.ResponseType = attachment.Video.ResponseType;
+                    attachments.Video.AccessKey = attachment.Video.AccessKey;
+                    attachments.Video.CanLike = attachment.Video.CanLike;
+                    attachments.Video.CanRepost = attachment.Video.CanRepost;
+                    attachments.Video.CanSubscribe = attachment.Video.CanSubscribe;
+                    attachments.Video.CanAddToFaves = attachment.Video.CanAddToFaves;
+                    attachments.Video.CanAdd = attachment.Video.CanAdd;
+                    attachments.Video.Comments = attachment.Video.Comments;
+                    attachments.Video.TrackCode = attachment.Video.TrackCode;
+                    attachments.Video.Type = attachment.Video.Type;
+                    attachments.Video.Platform = attachment.Video.Platform;
+                    attachments.Video.CanDislike = attachment.Video.CanDislike;
+
+                    for (int k = 0; k < attachment.Video.Images.Count; k++)
+                    {
+                        var image = new Image
+                        {
+                            Height = attachment.Video.Images[k].Height,
+                            Width = attachment.Video.Images[k].Width,
+                            WithPadding = attachment.Video.Images[k].WithPadding,
+                            Url = attachment.Video.Images[k].Url,
+                        };
+
+                        attachments.Video.Images.Add(image);
+                    }
+
+                    for (int k = 0; k < attachment.Video.FirstFrames.Count; k++)
+                    {
+                        var firstFrame = new FirstFrame
+                        {
+                            Height = attachment.Video.FirstFrames[k].Height,
+                            Width = attachment.Video.FirstFrames[k].Width,
+                            Url = attachment.Video.FirstFrames[k].Url,
+                        };
+
+                        attachments.Video.FirstFrames.Add(firstFrame);
+                    }
+
+                    break;
+                }
+                case "event":
+                    attachments.Event.Id = attachment.Event.Id;
+                    attachments.Event.EventStartDateTime = attachment.Event.EventStartDateTime;
+                    attachments.Event.MemberStatus = attachment.Event.MemberStatus;
+                    attachments.Event.IsFavorite = attachment.Event.IsFavorite;
+                    attachments.Event.Address = attachment.Event.Address;
+                    attachments.Event.Text = attachment.Event.Text;
+                    attachments.Event.ButtonText = attachment.Event.ButtonText;
+                    break;
+            }
+
+            wallPost.PostAttachment.Add(attachments);
+        }
+
+        foreach (var copyPost in t.CopyHistory.Select(copy => new WallPost()
+                 {
+                     Id = copy.Id,
+                     SourceId = Math.Abs(copy.OwnerId),
+                     PostText = copy.Text,
+                     CreatedAt = DateTimeOffset.FromUnixTimeSeconds(copy.Date),
+                     PostType = GetPostTypeFromString(copy.Type),
+                 }))
+        {
+            wallPost.InnerPosts.Add(copyPost);
+        }
+
+        return wallPost;
+    }
+
+    private WallPostTypes GetPostTypeFromString(string postType)
+    {
+        return postType switch
+        {
+            "post" => WallPostTypes.Post,
+            "copy" => WallPostTypes.Copy,
+            "reply" => WallPostTypes.Reply,
+            "postpone" => WallPostTypes.Postpone,
+            "suggest" => WallPostTypes.Suggest,
+            _ => WallPostTypes.Unknown
+        };
     }
 }

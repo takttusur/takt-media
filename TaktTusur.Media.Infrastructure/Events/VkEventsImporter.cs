@@ -4,7 +4,7 @@ using TaktTusur.Media.Domain.Events;
 
 namespace TaktTusur.Media.Infrastructure.Events;
 
-public class VkEventsImporter : IVkEventsImporter, IVkApiClient
+public class VkEventsImporter : IVkEventsImporter
 {
     private VkApiClient _vkApiClient;
 
@@ -13,45 +13,33 @@ public class VkEventsImporter : IVkEventsImporter, IVkApiClient
     {
         _vkApiClient = apiClient;
     }
-
-
-    public async Task<List<PublicEvent>> ImportAsync(string groupId, CancellationToken cancellationToken, int postsCount = 5)
+    
+    private async Task<List<PublicEvent>> AnalyzeAsync(VkPosts vkPosts, CancellationToken cancellationToken)
     {
-        return await AnalyzeAsync(await GetPostsAsync(groupId, postsCount, cancellationToken), cancellationToken);
+        // VkGroupInfo vkGroupInfo;
+        // List<PublicEvent> publicEvents = new();
+        //
+        // foreach (var post in vkPosts.Posts.Where(p => p.PostAttachment.Any(t => t.Type == "event")))
+        // {
+        //     vkGroupInfo = await GetGroupInfoAsync(post.PostAttachment.FirstOrDefault(p => p.Type == "event").Event.Id.ToString(), cancellationToken);
+        //
+        //     PublicEvent publicEvent = new()
+        //     {
+        //         EventStartDateTime = vkGroupInfo.StartDateTime,
+        //         EventEndDateTime = vkGroupInfo.FinishDateTime,
+        //         EventTitle = vkGroupInfo.GroupName,
+        //         EventURL = post.PostURL,
+        //         Attachments = new()
+        //     };
+        //
+        //     publicEvents.Add(publicEvent);
+        // }
+        throw new NotImplementedException();
+        //return publicEvents;
     }
 
-    public async Task<VkGroupInfo> GetGroupInfoAsync(string groupId, CancellationToken cancellationToken)
+    public Task<List<PublicEvent>> ImportAsync(string vkPublicEventId, CancellationToken cancellationToken)
     {
-        return await _vkApiClient.GetGroupInfoAsync(groupId, cancellationToken);
-    }
-
-    public async Task<VkPost> GetPostsAsync(string groupId, int maxPosts, CancellationToken cancellationToken)
-    {
-        return await _vkApiClient.GetPostsAsync(groupId, maxPosts, cancellationToken);
-    }
-
-
-    private async Task<List<PublicEvent>> AnalyzeAsync(VkPost vkPost, CancellationToken cancellationToken)
-    {
-        VkGroupInfo vkGroupInfo;
-        List<PublicEvent> publicEvents = new();
-
-        foreach (var post in vkPost.Posts.Where(p => p.PostAttachment.Any(t => t.Type == "event")))
-        {
-            vkGroupInfo = await GetGroupInfoAsync(post.PostAttachment.FirstOrDefault(p => p.Type == "event").Event.Id.ToString(), cancellationToken);
-
-            PublicEvent publicEvent = new()
-            {
-                EventStartDateTime = vkGroupInfo.StartDateTime,
-                EventEndDateTime = vkGroupInfo.FinishDateTime,
-                EventTitle = vkGroupInfo.GroupName,
-                EventURL = post.PostURL,
-                Attachments = new()
-            };
-
-            publicEvents.Add(publicEvent);
-        }
-
-        return publicEvents;
+        throw new NotImplementedException();
     }
 }

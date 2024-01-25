@@ -2,17 +2,22 @@
 
 namespace TaktTusur.Media.Clients.VkApi.Models
 {
-    public class Post
+    public class WallPost
     {
         /// <summary>
-        /// Возвращает и задает Id записи.
+        /// Id поста.
         /// </summary>
-        public int PostId { get; set; }
+        public long Id { get; set; }
+        
+        /// <summary>
+        /// Id источника поста(группа, пользователь, мероприятие)
+        /// </summary>
+        public long SourceId { get; set; }
 
         /// <summary>
         /// Возвращает и задает дату и время создания записи.
         /// </summary>
-        public int PostDataTimeOfCreation { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>
         /// Возвращает и задает источник материала записи.
@@ -22,7 +27,7 @@ namespace TaktTusur.Media.Clients.VkApi.Models
         /// <summary>
         /// Возвращает и задает тип записи.
         /// </summary>
-        public string PostType { get; set; }
+        public WallPostTypes PostType { get; set; }
 
         /// <summary>
         /// Возвращает и задает массив объектов, соответствующих медиаресурсам, прикреплённым к записи.
@@ -38,5 +43,10 @@ namespace TaktTusur.Media.Clients.VkApi.Models
         /// Возвращает и задает URL-ссылку на данную запись.
         /// </summary>
         public string PostURL { get; set; }
+
+        /// <summary>
+        /// Если запись является репостом, то тут будет цепочка репостов.
+        /// </summary>
+        public List<WallPost> InnerPosts { get; set; } = new List<WallPost>();
     }
 }

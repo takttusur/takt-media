@@ -8,7 +8,7 @@ namespace TaktTusur.Media.Clients.VkApi.WallByIdResponse
         public int Id { get; set; }
 
         [JsonPropertyName("time")]
-        public int EventStartDateTime { get; set; }
+        public long EventStartDateTime { get; set; }
 
         [JsonPropertyName("member_status")]
         public int MemberStatus { get; set; }

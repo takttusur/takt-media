@@ -1,31 +1,25 @@
-using TaktTusur.Media.Domain.Common;
 
 namespace TaktTusur.Media.Domain.Events;
 
 public class PublicEvent
 {
     /// <summary>
-    /// Возвращает и задает дату и время начала события.
+    /// Р”Р°С‚Р° Рё РІСЂРµРјСЏ РЅР°С‡Р°Р»Р° СЃРѕР±С‹С‚РёСЏ
     /// </summary>
-    public int EventStartDateTime { get; set; }
+    public DateTimeOffset EventStartDateTime { get; set; }
 
     /// <summary>
-    /// Возвращает и задает дату и время завершения события.
+    /// Р”Р°С‚Р° Рё РІСЂРµРјСЏ РѕРєРѕРЅС‡Р°РЅРёСЏ СЃРѕР±С‹С‚РёСЏ
     /// </summary>
-    public int EventEndDateTime { get; set; }
+    public DateTimeOffset? EventEndDateTime { get; set; }
 
     /// <summary>
-    /// Возвращает и задает описание события.
+    /// РќР°Р·РІР°РЅРёРµ СЃРѕР±С‹С‚РёСЏ
     /// </summary>
-    public string EventTitle { get; set; }
-
+    public string Title { get; set; }
+    
     /// <summary>
-    /// Возвращает и задает медиаресурсы.
+    /// РЎСЃС‹Р»РєР° РЅР° РѕСЂРёРіРёРЅР°Р» РЅРѕРІРѕСЃС‚Рё/СЃРѕР±С‹С‚РёСЏ
     /// </summary>
-    public List<Attachment> Attachments { get; set; }
-
-    /// <summary>
-    /// Возвращает и задает URL-ссылку на данное событие.
-    /// </summary>
-    public string EventURL { get; set; }
+    public string? OriginalUrl { get; set; }
 }
