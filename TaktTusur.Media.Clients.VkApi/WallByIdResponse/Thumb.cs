@@ -20,7 +20,7 @@ namespace TaktTusur.Media.Clients.VkApi.WallByIdResponse
         public string AccessKey { get; set; }
 
         [JsonPropertyName("sizes")]
-        public List<Size> Sizes { get; set; }
+        public List<Size> Sizes { get; set; } = new();
 
         [JsonPropertyName("text")]
         public string Text { get; set; }

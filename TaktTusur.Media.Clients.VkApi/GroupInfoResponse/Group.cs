@@ -4,6 +4,8 @@ namespace TaktTusur.Media.Clients.VkApi.GroupInfoResponse
 {
     public class Group
     {
+        #region Base
+
         [JsonPropertyName("id")]
         public int Id { get; set; }
 
@@ -27,5 +29,27 @@ namespace TaktTusur.Media.Clients.VkApi.GroupInfoResponse
 
         [JsonPropertyName("photo_200")]
         public string Photo200 { get; set; }
+
+        #endregion
+
+        #region Optional
+
+        /// <summary>
+        /// Для встреч содержат время начала встречи в формате unixtime.
+        /// Для публичных страниц содержит только start_date — дата основания в формате YYYYMMDD.
+        /// </summary>
+        [JsonPropertyName("start_date")]
+        public long StartDate { get; set; }
+
+        /// <summary>
+        /// Для встреч содержат время окончания встречи в формате unixtime.
+        /// </summary>
+        [JsonPropertyName("finish_date")]
+        public long FinishDate { get; set; }
+
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
+
+        #endregion
     }
 }

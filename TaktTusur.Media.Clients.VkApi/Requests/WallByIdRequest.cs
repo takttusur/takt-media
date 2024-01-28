@@ -1,10 +1,9 @@
 ﻿using RestSharp;
 
-namespace TaktTusur.Media.Clients.VkApi
+namespace TaktTusur.Media.Clients.VkApi.Requests
 {
     public class WallByIdRequest
     {
-        
         [RequestProperty(Name = "domain")]
         public string Domain { get; set; }
 
