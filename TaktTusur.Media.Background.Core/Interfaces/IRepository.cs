@@ -3,7 +3,9 @@ namespace TaktTusur.Media.BackgroundCrawling.Core.Interfaces;
 public interface IRepository<in TEntity>
 {
 	void Add(TEntity entity);
+
+	void Delete(TEntity entity);
 	
-	void Save();
-	Task SaveAsync();
+	bool Save();
+	Task<bool> SaveAsync();
 }
