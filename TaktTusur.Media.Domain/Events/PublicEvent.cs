@@ -4,14 +4,19 @@ namespace TaktTusur.Media.Domain.Events;
 public class PublicEvent
 {
     /// <summary>
+    /// Идентификатор события
+    /// </summary>
+    public long Id { get; set; }
+    
+    /// <summary>
     /// Дата и время начала события
     /// </summary>
-    public DateTimeOffset EventStartDateTime { get; set; }
+    public DateTimeOffset Start { get; set; }
 
     /// <summary>
     /// Дата и время окончания события
     /// </summary>
-    public DateTimeOffset? EventEndDateTime { get; set; }
+    public DateTimeOffset? Finish { get; set; }
 
     /// <summary>
     /// Название события

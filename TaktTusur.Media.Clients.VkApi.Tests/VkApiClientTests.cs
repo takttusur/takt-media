@@ -6,9 +6,9 @@ namespace TaktTusur.Media.Clients.VkApi.Tests
     [TestFixture]
     public class VkApiClientTests
     {
-        private const string _testVkEvent = "takttusur.testevent";
-        private const string _testVkGroup = "takttusur.testpublic";
-        private const string _testVkIdNotExists = "takttusur.testevent00000000";
+        private const string TestVkEvent = "takttusur.testevent";
+        private const string TestVkGroup = "takttusur.testpublic";
+        private const string TestVkIdNotExists = "takttusur.testevent00000000";
         private readonly VkApiClient _client;
         
         public VkApiClientTests()
@@ -22,18 +22,18 @@ namespace TaktTusur.Media.Clients.VkApi.Tests
         }
 
         [Test]
-        [TestCase(_testVkEvent, "TaktTusur test event")]
+        [TestCase(TestVkEvent, "TaktTusur test event")]
         public async Task CheckingTitleVkGroup(string groupId, string title)
         {
             var info = await _client.GetGroupInfoAsync(groupId, CancellationToken.None);
 
-            Assert.That(info.GroupName, Is.EqualTo(title), "Wrong group name");
+            Assert.That(info.Name, Is.EqualTo(title), "Wrong group name");
             Assert.That(info.StartDateTime, Is.Not.Null, "Wrong start date");
             Assert.That(info.FinishDateTime, Is.Not.Null, "Wrong finish date");
         }
 
         [Test]
-        [TestCase(_testVkEvent, 3)]
+        [TestCase(TestVkEvent, 3)]
         public async Task CheckingQuantityOfPostsFromVkGroupWall(string groupId, int numberOfPosts)
         {
             
@@ -43,7 +43,7 @@ namespace TaktTusur.Media.Clients.VkApi.Tests
         }
 
         [Test]
-        [TestCase(_testVkEvent)]
+        [TestCase(TestVkEvent)]
         public async Task CheckingPhotoIdFromAttachmentsFromVkGroupWallPost(string groupId)
         {
             var testResult = await _client.GetPostsAsync(groupId, 1, CancellationToken.None);
@@ -52,7 +52,7 @@ namespace TaktTusur.Media.Clients.VkApi.Tests
         }
 
         [Test]
-        [TestCase(_testVkIdNotExists)]
+        [TestCase(TestVkIdNotExists)]
         public void CheckingThrowingExceptionGetGroupInfo(string groupId)
         {
             Assert.ThrowsAsync<VkApiException>(async () =>
@@ -62,7 +62,7 @@ namespace TaktTusur.Media.Clients.VkApi.Tests
         }
 
         [Test]
-        [TestCase(_testVkIdNotExists)]
+        [TestCase(TestVkIdNotExists)]
         public void CheckingThrowingExceptionGetPost(string groupId)
         {
             Assert.ThrowsAsync<VkApiException>(async () =>
@@ -72,7 +72,7 @@ namespace TaktTusur.Media.Clients.VkApi.Tests
         }
 
         [Test]
-        [TestCase(_testVkGroup, 4, 224381871)]
+        [TestCase(TestVkGroup, 4, 224381871)]
         public async Task GetPostWithAttachedEventTest(string groupId, long eventPostId, long publicEventId)
         {
             var posts = await _client.GetPostsAsync(groupId,10, CancellationToken.None);
@@ -89,7 +89,7 @@ namespace TaktTusur.Media.Clients.VkApi.Tests
         }
 
         [Test]
-        [TestCase(_testVkGroup, 0, 224381871)]
+        [TestCase(TestVkGroup, 0, 224381871)]
         public async Task GetRepostFromEventTest(string groupId, long repostPostId, long repostSourceId)
         {
             var posts = await _client.GetPostsAsync(groupId,10, CancellationToken.None);

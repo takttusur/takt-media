@@ -4,5 +4,5 @@ namespace TaktTusur.Media.Infrastructure.Analyzers;
 
 public interface IVkAnalyzer
 {
-	public Task<bool> IsFromPublicEventAsync(WallPost posts, CancellationToken token);
+	public Task<string?> FindPublicEvent(WallPost posts, CancellationToken token);
 }

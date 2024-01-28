@@ -51,16 +51,17 @@ public class VkApiClient : IVkApiClient
 
         if (result.GroupInfoError == null)
         {
-            info.GroupId = result.Response.Groups[0].Id;
-            info.GroupName = result.Response.Groups[0].Name;
-            info.GroupScreenName = result.Response.Groups[0].ScreenName;
-            info.GroupType = result.Response.Groups[0].Type;
-            info.GroupPhoto50 = result.Response.Groups[0].Photo50;
-            info.GroupPhoto100 = result.Response.Groups[0].Photo100;
-            info.GroupPhoto200 = result.Response.Groups[0].Photo200;
-            info.GroupIsClosed = result.Response.Groups[0].IsClosed;
+            info.Id = result.Response.Groups[0].Id;
+            info.Name = result.Response.Groups[0].Name;
+            info.ScreenName = result.Response.Groups[0].ScreenName;
+            info.Type = result.Response.Groups[0].Type;
+            info.Photo50 = result.Response.Groups[0].Photo50;
+            info.Photo100 = result.Response.Groups[0].Photo100;
+            info.Photo200 = result.Response.Groups[0].Photo200;
+            info.IsClosed = result.Response.Groups[0].IsClosed;
+            info.URL = $"https://vk.com/public{info.Id}";
             
-            if (info.GroupType != "event") return info;
+            if (info.Type != "event") return info;
             
             info.StartDateTime = result.Response.Groups[0].StartDate != 0 ? 
                 DateTimeOffset.FromUnixTimeSeconds(result.Response.Groups[0].StartDate) : null;
