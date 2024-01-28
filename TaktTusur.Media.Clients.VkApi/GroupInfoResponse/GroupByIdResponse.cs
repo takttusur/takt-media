@@ -10,6 +10,3 @@ public class GroupByIdResponse
     [JsonPropertyName("error")]
     public Error GroupInfoError { get; set; }
 }
-
-
-

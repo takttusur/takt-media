@@ -2,7 +2,7 @@
 
 namespace TaktTusur.Media.Clients.VkApi.WallByIdResponse
 {
-    public class Item
+    public class PostDto
     {
         [JsonPropertyName("inner_type")]
         public string InnerType { get; set; }
@@ -38,16 +38,16 @@ namespace TaktTusur.Media.Clients.VkApi.WallByIdResponse
         public int Edited { get; set; }
 
         [JsonPropertyName("from_id")]
-        public int FromId { get; set; }
+        public long FromId { get; set; }
 
         [JsonPropertyName("id")]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [JsonPropertyName("likes")]
         public Likes Likes { get; set; } = new Likes();
 
         [JsonPropertyName("owner_id")]
-        public int OwnerId { get; set; }
+        public long OwnerId { get; set; }
 
         [JsonPropertyName("post_type")]
         public string PostType { get; set; }

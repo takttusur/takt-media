@@ -1,4 +1,4 @@
-﻿namespace TaktTusur.Media.Clients.VkApi
+﻿namespace TaktTusur.Media.Clients.VkApi.Models
 {
     public class VkApiException: Exception
     {

@@ -15,6 +15,5 @@ namespace TaktTusur.Media.Clients.VkApi.WallByIdResponse
 
         [JsonPropertyName("type")]
         public string Type { get; set; }
-
     }
 }
