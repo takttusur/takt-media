@@ -94,7 +94,7 @@ public class VkApiClient : IVkApiClient
             Extended = 1
         };
 
-        var testResult = new VkPosts();
+        var testResult = new VkPost();
         var client = new RestClient(_restClientOptions);
         var postResult = await client.GetJsonAsync<WallPostByIdResponse>("wall.get", wallRequest, cancellationToken);
 
