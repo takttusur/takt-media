@@ -16,6 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TaktTusur.Media.BackgroundCrawling.Core\TaktTusur.Media.BackgroundCrawling.Core.csproj" />
+    <ProjectReference Include="..\TaktTusur.Media.Background.Core\TaktTusur.Media.Background.Core.csproj" />
   </ItemGroup>
 </Project>
