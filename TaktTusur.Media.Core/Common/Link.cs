@@ -1,4 +1,4 @@
-﻿namespace TaktTusur.Media.Domain.Common
+﻿namespace TaktTusur.Media.Core.Common
 {
     public class Link
     {

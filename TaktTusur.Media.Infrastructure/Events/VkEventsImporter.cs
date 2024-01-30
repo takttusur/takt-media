@@ -1,5 +1,5 @@
 using TaktTusur.Media.Clients.VkApi;
-using TaktTusur.Media.Domain.Events;
+using TaktTusur.Media.Core.Events;
 
 namespace TaktTusur.Media.Infrastructure.Events;
 

@@ -5,9 +5,9 @@ VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaktTusur.Media.Api", "TaktTusur.Media.Api\TaktTusur.Media.Api.csproj", "{65053BA7-11DB-4514-BF4C-CEF6AA3EA4C2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaktTusur.Media.Domain", "TaktTusur.Media.Domain\TaktTusur.Media.Domain.csproj", "{B498B9E1-A1F5-4976-9324-51B4CA97CC65}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaktTusur.Media.Core", "TaktTusur.Media.Core\TaktTusur.Media.Core.csproj", "{B498B9E1-A1F5-4976-9324-51B4CA97CC65}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaktTusur.Media.Domain.Tests", "TaktTusur.Media.Domain.Tests\TaktTusur.Media.Domain.Tests.csproj", "{83847824-EDE8-48E0-9318-112119F8B217}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaktTusur.Media.Core.Tests", "TaktTusur.Media.Core.Tests\TaktTusur.Media.Core.Tests.csproj", "{83847824-EDE8-48E0-9318-112119F8B217}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaktTusur.Media.Infrastructure", "TaktTusur.Media.Infrastructure\TaktTusur.Media.Infrastructure.csproj", "{A28E07D4-8498-4A6C-A6C5-3FA81783EA67}"
 EndProject

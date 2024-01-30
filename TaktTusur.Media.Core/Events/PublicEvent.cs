@@ -1,5 +1,5 @@
 
-namespace TaktTusur.Media.Domain.Events;
+namespace TaktTusur.Media.Core.Events;
 
 public class PublicEvent
 {

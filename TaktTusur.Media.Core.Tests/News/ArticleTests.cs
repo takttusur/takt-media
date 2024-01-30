@@ -1,9 +1,9 @@
 using NUnit.Framework;
 
-namespace TaktTusur.Media.Domain.Tests.Events;
+namespace TaktTusur.Media.Core.Tests.News;
 
 [TestFixture]
-public class PublicEventTests
+public class ArticleTests
 {
     [Test]
     public void Test()

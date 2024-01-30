@@ -1,4 +1,4 @@
-namespace TaktTusur.Media.Domain.News;
+namespace TaktTusur.Media.Core.News;
 
 public class Article
 {

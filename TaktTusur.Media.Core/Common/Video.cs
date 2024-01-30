@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaktTusur.Media.Domain.Common
+namespace TaktTusur.Media.Core.Common
 {
     public class Video
     {
