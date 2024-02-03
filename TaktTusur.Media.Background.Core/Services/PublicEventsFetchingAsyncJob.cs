@@ -5,7 +5,7 @@ namespace TaktTusur.Media.BackgroundCrawling.Core.Services;
 
 public class PublicEventsFetchingAsyncJob : IAsyncJob
 {
-	public Task<JobResult> Execute(CancellationToken token)
+	public Task<JobResult> ExecuteAsync(CancellationToken token)
 	{
 		throw new NotImplementedException();
 	}

@@ -1,7 +1,7 @@
 namespace TaktTusur.Media.BackgroundCrawling.Core.Interfaces;
 
 /// <summary>
-/// Transforms text
+/// Transforms text.
 /// </summary>
 public interface ITextTransformer
 {

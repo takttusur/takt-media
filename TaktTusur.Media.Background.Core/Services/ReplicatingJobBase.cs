@@ -35,7 +35,7 @@ public abstract class ReplicatingJobBase<T> : IAsyncJob where T: IIdentifiable, 
 		_environment = environment;
 	}
 	
-	public virtual async Task<JobResult> Execute(CancellationToken token)
+	public virtual async Task<JobResult> ExecuteAsync(CancellationToken token)
 	{
 		if (!_jobSettings.IsEnabled)
 		{

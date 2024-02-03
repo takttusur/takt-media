@@ -40,7 +40,7 @@ public class NewsFetchingAsyncJob : IAsyncJob
 		_logger = logger;
 	}
 
-	public async Task<JobResult> Execute(CancellationToken token)
+	public async Task<JobResult> ExecuteAsync(CancellationToken token)
 	{
 		if (!_settings.IsEnabled)
 		{
@@ -142,7 +142,7 @@ public class NewsFetchingAsyncJob : IAsyncJob
 	private bool TryUpdateExistingArticle(Article remoteArticle)
 	{
 		// OriginalReference was verified previously
-		var localArticle = _articlesRepository.GetByOriginalReference(remoteArticle.OriginalReference!);
+		var localArticle = _articlesRepository.GetByOriginalId(remoteArticle.OriginalReference!);
 		if (localArticle == null) return false;
 		localArticle.OriginalLastUpdated = remoteArticle.OriginalLastUpdated;
 		localArticle.Text =

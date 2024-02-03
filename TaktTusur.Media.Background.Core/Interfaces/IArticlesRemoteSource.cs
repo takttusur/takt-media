@@ -2,7 +2,7 @@ using TaktTusur.Media.Core.News;
 
 namespace TaktTusur.Media.BackgroundCrawling.Core.Interfaces;
 
-public interface IArticlesRemoteSource : IRemoteSource<Article>
-{
-	
-}
+/// <summary>
+/// The <see cref="IRemoteSource{TEntity}"/> for <see cref="Article"/>
+/// </summary>
+public interface IArticlesRemoteSource : IRemoteSource<Article>;

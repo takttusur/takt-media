@@ -14,6 +14,6 @@ public class NewsFetchingQuartzJob : NewsFetchingAsyncJob, IJob
 
 	public async Task Execute(IJobExecutionContext context)
 	{
-		await this.Execute(context.CancellationToken);
+		await this.ExecuteAsync(context.CancellationToken);
 	}
 }

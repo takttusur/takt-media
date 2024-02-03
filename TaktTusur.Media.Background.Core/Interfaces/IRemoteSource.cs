@@ -1,7 +1,7 @@
 namespace TaktTusur.Media.BackgroundCrawling.Core.Interfaces;
 
 /// <summary>
-/// Remote readonly source for entities
+/// Remote readonly resource for entities
 /// Provides paginated results and not-paginated
 /// </summary>
 /// <typeparam name="TEntity">Entity</typeparam>
