@@ -7,34 +7,47 @@ using TaktTusur.Media.Core.Interfaces;
 
 namespace TaktTusur.Media.BackgroundCrawling.Core.Services;
 
+/// <summary>
+/// Base job implementation for items replication from remote resources.
+/// </summary>
+/// <typeparam name="T">
+/// Entity for replication,
+/// should be <see cref="IIdentifiable"/> and <see cref="IReplicated"/>
+/// </typeparam>
 public abstract class ReplicatingJobBase<T> : IAsyncJob where T: IIdentifiable, IReplicated
 {
-	private const string StartWorkingMsg = $"{nameof(ReplicatingJobBase<T>)} job is started";
-	private const string FinishWorkingMsg = $"{nameof(ReplicatingJobBase<T>)} job is finished";
-	private const string InterruptedMsg = $"{nameof(ReplicatingJobBase<T>)} job was interrupted";
-	private const string DisabledMsg = $"{nameof(ReplicatingJobBase<T>)} job is disabled";
+	protected const string StartWorkingMsg = $"{nameof(ReplicatingJobBase<T>)} job is started";
+	protected const string FinishWorkingMsg = $"{nameof(ReplicatingJobBase<T>)} job is finished";
+	protected const string InterruptedMsg = $"{nameof(ReplicatingJobBase<T>)} job was interrupted";
+	protected const string DisabledMsg = $"{nameof(ReplicatingJobBase<T>)} job is disabled";
 	
 	private readonly IRemoteSource<T> _remoteSource;
 	private readonly IRepository<T> _repository;
 	private readonly ReplicationJobSettings _jobSettings;
 	private readonly ILogger _logger;
-	private readonly IEnvironment _environment;
 	private readonly Queue<T> _brokenItems = new Queue<T>();
-
+	
+	/// <param name="remoteSource">Remote source of entity</param>
+	/// <param name="repository">Repository for <see cref="T"/> </param>
+	/// <param name="logger">Logger</param>
+	/// <param name="jobSettings">Settings for the job, don't take it from DI</param>
 	protected ReplicatingJobBase(
 		IRemoteSource<T> remoteSource, 
 		IRepository<T> repository,
-		ReplicationJobSettings jobSettings,
 		ILogger logger,
-		IEnvironment environment)
+		ReplicationJobSettings jobSettings)
 	{
 		_remoteSource = remoteSource;
 		_repository = repository;
 		_jobSettings = jobSettings;
 		_logger = logger;
-		_environment = environment;
 	}
 	
+	/// <summary>
+	/// Execute the job.
+	/// </summary>
+	/// <param name="token">Cancellation token</param>
+	/// <returns>Job result, success or fail</returns>
 	public virtual async Task<JobResult> ExecuteAsync(CancellationToken token)
 	{
 		if (!_jobSettings.IsEnabled)
@@ -42,9 +55,10 @@ public abstract class ReplicatingJobBase<T> : IAsyncJob where T: IIdentifiable, 
 			_logger.LogDebug(DisabledMsg);
 			return JobResult.SuccessResult();
 		}
-		
+
 		try
 		{
+			_logger.LogDebug(StartWorkingMsg);
 			if (_remoteSource.IsPaginationSupported)
 			{
 				await FetchByChunks();
@@ -52,6 +66,11 @@ public abstract class ReplicatingJobBase<T> : IAsyncJob where T: IIdentifiable, 
 			else
 			{
 				await FetchByOneRequest();
+			}
+
+			if (_brokenItems.Count != 0)
+			{
+				ProcessBrokenItems(_brokenItems);
 			}
 		}
 		catch (RemoteReadingException e)
@@ -69,11 +88,67 @@ public abstract class ReplicatingJobBase<T> : IAsyncJob where T: IIdentifiable, 
 			_logger.LogError(e, InterruptedMsg);
 			return JobResult.ErrorResult(e.Message);
 		}
+		finally
+		{
+			Cleanup();
+			_logger.LogDebug(FinishWorkingMsg);
+		}
 		
-		_logger.LogDebug(FinishWorkingMsg);
 		return JobResult.SuccessResult();
 	}
+
+	/// <summary>
+	/// The method should check is any similar item in <see cref="IRepository{TEntity}"/>.
+	/// If we have the item, it should be updated and return true.
+	/// If we don't have it - return false.
+	/// </summary>
+	/// <remarks>
+	/// You don't have to call <see cref="IRepository{TEntity}.SaveAsync()"/> here.
+	/// It will be called by <see cref="ReplicatingJobBase{T}"/>
+	/// </remarks>
+	/// <param name="remoteItem">Item from remote resource.</param>
+	/// <returns>true - if item was updated, false - if item not found.</returns>
+	/// <example>
+	/// <code>
+	///	var item = _repository.GetByOriginalId(remoteItem.OriginalId);
+	/// if (item == null) return false;
+	/// item.Text = remoteItem.Text;
+	/// _repository.Update(item);
+	/// return true;
+	/// </code>
+	/// </example>
+	protected abstract bool TryUpdateExistingItem(T remoteItem);
+
+	/// <summary>
+	/// Add new item to <see cref="IRepository{TEntity}"/>
+	/// </summary>
+	/// <param name="item">New item <see cref="IIdentifiable"/>, <see cref="IReplicated"/></param>
+	/// <remarks>
+	/// You don't have to call <see cref="IRepository{TEntity}.SaveAsync()"/> here.
+	/// It will be called by <see cref="ReplicatingJobBase{T}"/>
+	/// </remarks>
+	protected abstract void AddNewItem(T item);
+
+	/// <summary>
+	/// During the replicating process, some items can be broken.
+	/// If you need to report about it - use brokenItemsQueue.
+	/// </summary>
+	/// <param name="brokenItemsQueue">Queue with broken items.</param>
+	protected virtual void ProcessBrokenItems(Queue<T> brokenItemsQueue)
+	{ }
+
+	/// <summary>
+	/// Cleanup after the job execution.
+	/// </summary>
+	protected virtual void Cleanup()
+	{
+		_brokenItems.Clear();
+	}
 	
+	/// <summary>
+	/// If <see cref="IRemoteSource{TEntity}"/> supports fetching by pages,
+	/// items will be parsed by chunks.
+	/// </summary>
 	private async Task FetchByChunks()
 	{
 		var skip = 0;
@@ -90,6 +165,10 @@ public abstract class ReplicatingJobBase<T> : IAsyncJob where T: IIdentifiable, 
 		} while (skip < total);
 	}
 
+	/// <summary>
+	/// If <see cref="IRemoteSource{TEntity}"/> doesn't support
+	/// reading by chunks, and provides only one response - use this to read it.
+	/// </summary>
 	private async Task FetchByOneRequest()
 	{
 		var items = await _remoteSource.GetListAsync();
@@ -103,6 +182,10 @@ public abstract class ReplicatingJobBase<T> : IAsyncJob where T: IIdentifiable, 
 		await ProcessItems(items);
 	}
 	
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="items"></param>
 	private async Task ProcessItems(List<T> items)
 	{
 		var counter = 0;
@@ -132,10 +215,6 @@ public abstract class ReplicatingJobBase<T> : IAsyncJob where T: IIdentifiable, 
 			await _repository.SaveAsync();
 		}
 	}
-
-	protected abstract bool TryUpdateExistingItem(T remoteItem);
-
-	protected abstract void AddNewItem(T item);
 
 	// private bool TryUpdateExistingItem(T remoteItem)
 	// {
