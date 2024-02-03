@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace TaktTusur.Media.BackgroundCrawling.Infrastructure.Serializers;
 
-public class JsonSerializerBase<T> : IJsonSerializer<T>
+public class CommonJsonSerializer<T> : IJsonSerializer<T>
 {
 	public string Serialize(T o)
 	{

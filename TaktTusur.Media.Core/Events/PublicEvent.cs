@@ -1,7 +1,9 @@
 
+using TaktTusur.Media.BackgroundCrawling.Core.Entities;
+
 namespace TaktTusur.Media.Core.Events;
 
-public class PublicEvent
+public class PublicEvent : IIdentifiable
 {
     /// <summary>
     /// Идентификатор события

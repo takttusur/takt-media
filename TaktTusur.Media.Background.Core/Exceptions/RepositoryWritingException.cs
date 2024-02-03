@@ -1,6 +1,8 @@
 namespace TaktTusur.Media.BackgroundCrawling.Core.Exceptions;
 
-public class RepositoryWritingException : RepositoryException
-{
-	
-}
+
+/// <summary>
+/// Throw this for writing to repository issue.
+/// <seealso cref="RepositoryException"/>
+/// </summary>
+public class RepositoryWritingException : RepositoryException;

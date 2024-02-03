@@ -1,5 +1,7 @@
 namespace TaktTusur.Media.BackgroundCrawling.Core.Exceptions;
 
-public class RepositoryReadingException : RepositoryException
-{
-}
+/// <summary>
+/// Throw this for reading from repository issue.
+/// <seealso cref="RepositoryException"/>
+/// </summary>
+public class RepositoryReadingException : RepositoryException;
