@@ -14,12 +14,12 @@ namespace TaktTusur.Media.BackgroundCrawling.Core.Services;
 /// Entity for replication,
 /// should be <see cref="IIdentifiable"/> and <see cref="IReplicated"/>
 /// </typeparam>
-public abstract class ReplicatingJobBase<T> : IAsyncJob where T: IIdentifiable, IReplicated
+public abstract class ReplicationJobBase<T> : IAsyncJob where T: IIdentifiable, IReplicated
 {
-	protected const string StartWorkingMsg = $"{nameof(ReplicatingJobBase<T>)} job is started";
-	protected const string FinishWorkingMsg = $"{nameof(ReplicatingJobBase<T>)} job is finished";
-	protected const string InterruptedMsg = $"{nameof(ReplicatingJobBase<T>)} job was interrupted";
-	protected const string DisabledMsg = $"{nameof(ReplicatingJobBase<T>)} job is disabled";
+	protected const string StartWorkingMsg = $"{nameof(ReplicationJobBase<T>)} job is started";
+	protected const string FinishWorkingMsg = $"{nameof(ReplicationJobBase<T>)} job is finished";
+	protected const string InterruptedMsg = $"{nameof(ReplicationJobBase<T>)} job was interrupted";
+	protected const string DisabledMsg = $"{nameof(ReplicationJobBase<T>)} job is disabled";
 	
 	private readonly IRemoteSource<T> _remoteSource;
 	private readonly IRepository<T> _repository;
@@ -31,7 +31,7 @@ public abstract class ReplicatingJobBase<T> : IAsyncJob where T: IIdentifiable, 
 	/// <param name="repository">Repository for <see cref="T"/> </param>
 	/// <param name="logger">Logger</param>
 	/// <param name="jobSettings">Settings for the job, don't take it from DI</param>
-	protected ReplicatingJobBase(
+	protected ReplicationJobBase(
 		IRemoteSource<T> remoteSource, 
 		IRepository<T> repository,
 		ILogger logger,
@@ -104,7 +104,7 @@ public abstract class ReplicatingJobBase<T> : IAsyncJob where T: IIdentifiable, 
 	/// </summary>
 	/// <remarks>
 	/// You don't have to call <see cref="IRepository{TEntity}.SaveAsync()"/> here.
-	/// It will be called by <see cref="ReplicatingJobBase{T}"/>
+	/// It will be called by <see cref="ReplicationJobBase{T}"/>
 	/// </remarks>
 	/// <param name="remoteItem">Item from remote resource.</param>
 	/// <returns>true - if item was updated, false - if item not found.</returns>
@@ -125,7 +125,7 @@ public abstract class ReplicatingJobBase<T> : IAsyncJob where T: IIdentifiable, 
 	/// <param name="item">New item <see cref="IIdentifiable"/>, <see cref="IReplicated"/></param>
 	/// <remarks>
 	/// You don't have to call <see cref="IRepository{TEntity}.SaveAsync()"/> here.
-	/// It will be called by <see cref="ReplicatingJobBase{T}"/>
+	/// It will be called by <see cref="ReplicationJobBase{T}"/>
 	/// </remarks>
 	protected abstract void AddNewItem(T item);
 
@@ -215,23 +215,4 @@ public abstract class ReplicatingJobBase<T> : IAsyncJob where T: IIdentifiable, 
 			await _repository.SaveAsync();
 		}
 	}
-
-	// private bool TryUpdateExistingItem(T remoteItem)
-	// {
-	// 	// OriginalReference was verified previously
-	// 	var localArticle = _repository.GetByOriginalReference(remoteArticle.OriginalReference!);
-	// 	if (localArticle == null) return false;
-	// 	localArticle.OriginalLastUpdated = remoteArticle.OriginalLastUpdated;
-	// 	localArticle.Text =
-	// 		_textTransformer.MakeShorter(remoteArticle.Text, _settings.MaxSymbolsCount, _settings.MaxParagraphCount);
-	// 	localArticle.LastUpdated = _environment.GetCurrentDateTime();
-	// 	return true;
-	// }
-
-	// private void AddNewItem(T item)
-	// {
-	// 	item.Text = _textTransformer.MakeShorter(item.Text);
-	// 	item.LastUpdated = _environment.GetCurrentDateTime();
-	// 	_articlesRepository.Add(item);
-	// }
 }

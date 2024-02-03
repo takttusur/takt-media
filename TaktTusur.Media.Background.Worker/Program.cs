@@ -6,7 +6,7 @@ var host = Host.CreateDefaultBuilder(args)
     {
         services.AddQuartz((options) =>
         {
-            options.AddJob<NewsFetchingQuartzJob>(JobKey.Create(nameof(NewsFetchingQuartzJob)));
+            options.AddJob<ArticlesFetchingQuartzJob>(JobKey.Create(nameof(ArticlesFetchingQuartzJob)));
         });
         services.AddQuartzHostedService((options) =>
         {
