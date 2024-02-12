@@ -21,7 +21,7 @@
     </ItemGroup>
 	
 	<Target Name="GenerateFromJsonSchema" BeforeTargets="Build">
-	  <MSBuild Projects="..\..\TaktTusur.Media.Clients.VkApi.Generator.csproj\TaktTusur.Media.Clients.VkApi.Generator.csproj" Targets="Build" />
+	  <MSBuild Projects="..\TaktTusur.Media.Clients.VkApi.Generator\TaktTusur.Media.Clients.VkApi.Generator.csproj" Targets="Build" />
 	</Target>
 
 </Project>

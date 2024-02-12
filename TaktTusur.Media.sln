@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaktTusur.Media.Clients.VkA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaktTusur.Media.Infrastructure.Tests", "TaktTusur.Media.Infrastructure.Tests\TaktTusur.Media.Infrastructure.Tests.csproj", "{FA4441FF-1BB0-4352-AB64-2A866BA6DCFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaktTusur.Media.Clients.VkApi.Generator", "..\TaktTusur.Media.Clients.VkApi.Generator.csproj\TaktTusur.Media.Clients.VkApi.Generator.csproj", "{BF4E5770-2740-46A8-AC5B-6D3F501F6139}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaktTusur.Media.Clients.VkApi.Generator", "TaktTusur.Media.Clients.VkApi.Generator\TaktTusur.Media.Clients.VkApi.Generator.csproj", "{BF4E5770-2740-46A8-AC5B-6D3F501F6139}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
