@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
@@ -15,5 +15,13 @@
     <ItemGroup>
       <ProjectReference Include="..\TaktTusur.Media.Domain\TaktTusur.Media.Domain.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="VkSchema\Generated\" />
+    </ItemGroup>
+	
+	<Target Name="GenerateFromJsonSchema" BeforeTargets="Build">
+	  <MSBuild Projects="..\..\TaktTusur.Media.Clients.VkApi.Generator.csproj\TaktTusur.Media.Clients.VkApi.Generator.csproj" Targets="Build" />
+	</Target>
 
 </Project>
