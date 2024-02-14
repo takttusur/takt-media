@@ -9,6 +9,7 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
       <PackageReference Include="RestSharp" Version="110.2.0" />
     </ItemGroup>
 
@@ -17,7 +18,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="VkSchema\Generated\" />
+      <Folder Include="VkSchema\Generated\Groups\" />
+      <Folder Include="VkSchema\Generated\Wall\" />
     </ItemGroup>
 	
 	<Target Name="GenerateFromJsonSchema" BeforeTargets="Build">
