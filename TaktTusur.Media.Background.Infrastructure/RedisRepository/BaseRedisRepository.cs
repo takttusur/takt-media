@@ -19,6 +19,7 @@ public abstract class BaseRedisRepository<T> : IRepository<T> where T: IIdentifi
 	private readonly IDatabase _db;
 	
 	private ITransaction? _transaction = null;
+	private List<Task> _unprocessedChanges = new List<Task>();
 
 	/// <summary>
 	/// </summary>
@@ -50,14 +51,33 @@ public abstract class BaseRedisRepository<T> : IRepository<T> where T: IIdentifi
 		var key = new RedisKey(GetEntityKey(entity));
 		var value = new RedisValue(_jsonSerializer.Serialize(entity));
 
-		_transaction!.StringSetAsync(key, value).ConfigureAwait(false);
+		var task = _transaction!.StringSetAsync(key, value);
+		task.ConfigureAwait(false);
+		_unprocessedChanges.Add(task);
 	}
 
 	public virtual void Delete(T entity)
 	{
 		Delete(entity.Id);
 	}
-	
+
+	public void Update(T entity)
+	{
+		var newEntityKey = GetEntityKey(entity);
+
+		if (_transaction == null)
+		{
+			CreateTransaction();
+		}
+
+		var redisKey = new RedisKey(newEntityKey);
+		var value = new RedisValue(_jsonSerializer.Serialize(entity));
+
+		var task = _transaction!.StringSetAsync(redisKey, value);
+		task.ConfigureAwait(false);
+		_unprocessedChanges.Add(task);
+	}
+
 	public virtual void Delete(long id)
 	{
 		if (_transaction == null)
@@ -67,17 +87,25 @@ public abstract class BaseRedisRepository<T> : IRepository<T> where T: IIdentifi
 
 		var key = new RedisKey(GetEntityKey(id));
 
-		_transaction!.StringGetDeleteAsync(key).ConfigureAwait(false);
+		var task = _transaction!.StringGetDeleteAsync(key);
+		task.ConfigureAwait(false);
+		_unprocessedChanges.Add(task);
 	}
 
 	public bool Save()
 	{
-		return _transaction != null && _transaction.Execute();
+		if (_transaction == null) return false;
+		var result = _transaction.Execute();
+		Task.WaitAll(_unprocessedChanges.ToArray());
+		return result;
 	}
 
-	public Task<bool> SaveAsync()
+	public async Task<bool> SaveAsync()
 	{
-		return _transaction != null ? _transaction.ExecuteAsync() : Task.FromResult(false);
+		if (_transaction == null) return false;
+		var result = _transaction.ExecuteAsync();
+		await Task.WhenAll(_unprocessedChanges);
+		return await result;
 	}
 
 	protected string GetFullKey(string key)
@@ -98,5 +126,6 @@ public abstract class BaseRedisRepository<T> : IRepository<T> where T: IIdentifi
 	private void CreateTransaction()
 	{
 		_transaction = _db.CreateTransaction();
+		_unprocessedChanges = [];
 	}
 }

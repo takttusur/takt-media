@@ -19,6 +19,12 @@ public interface IRepository<in TEntity> where TEntity: IIdentifiable
 	/// </summary>
 	/// <param name="entity">Stored object</param>
 	void Delete(TEntity entity);
+
+	/// <summary>
+	/// Update the entity by Id.
+	/// </summary>
+	/// <param name="entity">Entity with defined ID</param>
+	void Update(TEntity entity);
 	
 	/// <summary>
 	/// Execute planned actions with stored objects.
