@@ -16,11 +16,6 @@
     <ItemGroup>
       <ProjectReference Include="..\TaktTusur.Media.Domain\TaktTusur.Media.Domain.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="VkSchema\Generated\Groups\" />
-      <Folder Include="VkSchema\Generated\Wall\" />
-    </ItemGroup>
 	
 	<Target Name="GenerateFromJsonSchema" BeforeTargets="Build">
 	  <MSBuild Projects="..\TaktTusur.Media.Clients.VkApi.Generator\TaktTusur.Media.Clients.VkApi.Generator.csproj" Targets="Build" />
