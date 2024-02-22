@@ -5,9 +5,9 @@ VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaktTusur.Media.Api", "TaktTusur.Media.Api\TaktTusur.Media.Api.csproj", "{65053BA7-11DB-4514-BF4C-CEF6AA3EA4C2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaktTusur.Media.Domain", "TaktTusur.Media.Domain\TaktTusur.Media.Domain.csproj", "{B498B9E1-A1F5-4976-9324-51B4CA97CC65}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaktTusur.Media.Core", "TaktTusur.Media.Core\TaktTusur.Media.Core.csproj", "{B498B9E1-A1F5-4976-9324-51B4CA97CC65}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaktTusur.Media.Domain.Tests", "TaktTusur.Media.Domain.Tests\TaktTusur.Media.Domain.Tests.csproj", "{83847824-EDE8-48E0-9318-112119F8B217}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaktTusur.Media.Core.Tests", "TaktTusur.Media.Core.Tests\TaktTusur.Media.Core.Tests.csproj", "{83847824-EDE8-48E0-9318-112119F8B217}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaktTusur.Media.Infrastructure", "TaktTusur.Media.Infrastructure\TaktTusur.Media.Infrastructure.csproj", "{A28E07D4-8498-4A6C-A6C5-3FA81783EA67}"
 EndProject
@@ -24,6 +24,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaktTusur.Media.BackgroundCrawling.Core", "TaktTusur.Media.BackgroundCrawling.Core\TaktTusur.Media.BackgroundCrawling.Core.csproj", "{767D22B5-0726-411B-878B-49472371EDDA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaktTusur.Media.BackgroundCrawling.Infrastructure", "TaktTusur.Media.BackgroundCrawling.Infrastructure\TaktTusur.Media.BackgroundCrawling.Infrastructure.csproj", "{7CF36185-9DED-46CC-9247-2979BA982BC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaktTusur.Media.Background.Core", "TaktTusur.Media.Background.Core\TaktTusur.Media.Background.Core.csproj", "{767D22B5-0726-411B-878B-49472371EDDA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaktTusur.Media.Background.Infrastructure", "TaktTusur.Media.Background.Infrastructure\TaktTusur.Media.Background.Infrastructure.csproj", "{7CF36185-9DED-46CC-9247-2979BA982BC9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +63,14 @@ Global
 		{F9123716-702C-4E70-9CBA-0117115ADCA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9123716-702C-4E70-9CBA-0117115ADCA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9123716-702C-4E70-9CBA-0117115ADCA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{767D22B5-0726-411B-878B-49472371EDDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{767D22B5-0726-411B-878B-49472371EDDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{767D22B5-0726-411B-878B-49472371EDDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{767D22B5-0726-411B-878B-49472371EDDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CF36185-9DED-46CC-9247-2979BA982BC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CF36185-9DED-46CC-9247-2979BA982BC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CF36185-9DED-46CC-9247-2979BA982BC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CF36185-9DED-46CC-9247-2979BA982BC9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2018E6C0-542D-4E44-9D70-3AA7BABADAEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2018E6C0-542D-4E44-9D70-3AA7BABADAEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2018E6C0-542D-4E44-9D70-3AA7BABADAEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
