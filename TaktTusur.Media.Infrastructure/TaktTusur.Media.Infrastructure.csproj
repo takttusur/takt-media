@@ -9,7 +9,11 @@
 
     <ItemGroup>
       <ProjectReference Include="..\TaktTusur.Media.Clients.VkApi\TaktTusur.Media.Clients.VkApi.csproj" />
-      <ProjectReference Include="..\TaktTusur.Media.Domain\TaktTusur.Media.Domain.csproj" />
+      <ProjectReference Include="..\TaktTusur.Media.Core\TaktTusur.Media.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.1" />
     </ItemGroup>
 
 </Project>

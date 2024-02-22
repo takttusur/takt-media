@@ -16,7 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\TaktTusur.Media.Domain\TaktTusur.Media.Domain.csproj" />
+      <ProjectReference Include="..\TaktTusur.Media.Core\TaktTusur.Media.Core.csproj" />
       <ProjectReference Include="..\TaktTusur.Media.Infrastructure\TaktTusur.Media.Infrastructure.csproj" />
     </ItemGroup>
 

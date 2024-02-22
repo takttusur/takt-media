@@ -13,7 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\TaktTusur.Media.Domain\TaktTusur.Media.Domain.csproj" />
+      <ProjectReference Include="..\TaktTusur.Media.Core\TaktTusur.Media.Core.csproj" />
     </ItemGroup>
 
 </Project>

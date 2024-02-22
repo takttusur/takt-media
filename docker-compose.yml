@@ -11,5 +11,18 @@ services:
     image: ${DOCKER_REGISTRY-}takttusurmediabackgroundcrawler
     build:
       context: .
-      dockerfile: TaktTusur.Media.BackgroundCrawler/Dockerfile
+      dockerfile: TaktTusur.Media.Background.Worker/Dockerfile
+      
+  takttusur.redis:
+    image: redis:7.2.4-alpine
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass takttusur
+    volumes:
+      - takttusur-redis:/data
+        
+volumes:
+  takttusur-redis:
+    driver: local
+    
 
