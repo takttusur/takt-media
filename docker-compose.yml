@@ -11,7 +11,7 @@ services:
     image: ${DOCKER_REGISTRY-}takttusurmediabackgroundcrawler
     build:
       context: .
-      dockerfile: TaktTusur.Media.BackgroundCrawler/Dockerfile
+      dockerfile: TaktTusur.Media.Background.Worker/Dockerfile
       
   takttusur.redis:
     image: redis:7.2.4-alpine

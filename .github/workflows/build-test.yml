@@ -30,6 +30,6 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ./
-          file: ./TaktTusur.Media.BackgroundCrawler/Dockerfile
+          file: ./TaktTusur.Media.Background.Worker/Dockerfile
           push: false
           platforms: "linux/amd64"
