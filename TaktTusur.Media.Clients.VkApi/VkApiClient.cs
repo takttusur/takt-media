@@ -1,8 +1,9 @@
 ﻿using RestSharp;
-using TaktTusur.Media.Clients.VkApi.GroupInfoResponse;
+using TaktTusur.Media.Clients.VkApi.Internal.GroupInfoResponse;
+using TaktTusur.Media.Clients.VkApi.Internal.WallByIdResponse;
 using TaktTusur.Media.Clients.VkApi.Models;
+using TaktTusur.Media.Clients.VkApi.Models.Enums;
 using TaktTusur.Media.Clients.VkApi.Requests;
-using TaktTusur.Media.Clients.VkApi.WallByIdResponse;
 
 namespace TaktTusur.Media.Clients.VkApi;
 
@@ -10,9 +11,9 @@ public class VkApiClient : IVkApiClient
 {
     private readonly VkApiOptions _options;
     private readonly RestClientOptions _restClientOptions;
-    
+
     /// <summary>
-    /// Создание request(запросов) для группы(GroupRequest) и для стены группы(WallRequest)
+    /// Создает экземпляр класса.
     /// </summary>
     /// <param name="options"></param>
     public VkApiClient(VkApiOptions options)
@@ -27,12 +28,10 @@ public class VkApiClient : IVkApiClient
     }
 
     /// <summary>
-    /// Метод запрашивает информацию о группе вк по ее id, а после обрабатывает ответ и заносит данные в info
+    /// Запрашивает информацию о сообществе.
     /// </summary>
-    /// <param name="groupId"></param>
-    /// <param name="cancellationToken"></param>
-    /// <param name="fields"></param>
-    /// <returns></returns>
+    /// <param name="groupId">Идентификатор сообщества.</param>
+    /// <param name="cancellationToken">Ключ доступа.</param>
     /// <exception cref="VkApiException"></exception>
     public async Task<VkGroupInfo> GetGroupInfoAsync(string groupId, CancellationToken cancellationToken)
     {
@@ -46,7 +45,7 @@ public class VkApiClient : IVkApiClient
 
         var info = new VkGroupInfo();
         var client = new RestClient(_restClientOptions);
-        
+
         var result = await client.GetJsonAsync<GroupByIdResponse>("groups.getById", groupRequest, cancellationToken);
 
         if (result.GroupInfoError == null)
@@ -54,19 +53,21 @@ public class VkApiClient : IVkApiClient
             info.Id = result.Response.Groups[0].Id;
             info.Name = result.Response.Groups[0].Name;
             info.ScreenName = result.Response.Groups[0].ScreenName;
-            info.Type = result.Response.Groups[0].Type;
+            info.Type = GetGroupTypeFromString(result.Response.Groups[0].Type);
             info.Photo50 = result.Response.Groups[0].Photo50;
             info.Photo100 = result.Response.Groups[0].Photo100;
             info.Photo200 = result.Response.Groups[0].Photo200;
-            info.IsClosed = result.Response.Groups[0].IsClosed;
+            info.AccessType = GetAccessTypeFromInt(result.Response.Groups[0].IsClosed);
             info.URL = $"https://vk.com/public{info.Id}";
-            
-            if (info.Type != "event") return info;
-            
-            info.StartDateTime = result.Response.Groups[0].StartDate != 0 ? 
-                DateTimeOffset.FromUnixTimeSeconds(result.Response.Groups[0].StartDate) : null;
-            info.FinishDateTime = result.Response.Groups[0].FinishDate != 0 ? 
-                DateTimeOffset.FromUnixTimeSeconds(result.Response.Groups[0].FinishDate) : null;
+
+            if (info.Type != VkGroupTypes.Event) return info;
+
+            info.StartDateTime = result.Response.Groups[0].StartDate != 0 
+                ? DateTimeOffset.FromUnixTimeSeconds(result.Response.Groups[0].StartDate) 
+                : null;
+            info.FinishDateTime = result.Response.Groups[0].FinishDate != 0 
+                ? DateTimeOffset.FromUnixTimeSeconds(result.Response.Groups[0].FinishDate) 
+                : null;
             info.Description = result.Response.Groups[0].Description;
         }
         else throw new VkApiException(result.GroupInfoError.ErrorCode, result.GroupInfoError.ErrorMessage);
@@ -75,21 +76,21 @@ public class VkApiClient : IVkApiClient
     }
 
     /// <summary>
-    /// Метод запрашивает информацию о постах со стены группы VK по ID группы
+    /// Запрашивает записи на стене сообщества.
     /// </summary>
-    /// <param name="groupId"></param>
-    /// <param name="maxPosts"></param>
-    /// <param name="cancellationToken"></param>
+    /// <param name="groupId">Идентификатор сообщества.</param>
+    /// <param name="count">Количество записей, которое необходимо получить. Максимальное значение: 100</param>
+    /// <param name="cancellationToken">Ключ доступа.</param>
     /// <returns></returns>
     /// <exception cref="VkApiException"></exception>
-    public async Task<VkPosts> GetPostsAsync(string groupId, int maxPosts, CancellationToken cancellationToken)
+    public async Task<VkPosts> GetPostsAsync(string groupId, int count, CancellationToken cancellationToken)
     {
         var wallRequest = new WallByIdRequest()
         {
             Version = "5.199",
             AccessToken = _options.Key,
             Domain = groupId,
-            Count = maxPosts,
+            Count = count,
             Extended = 1
         };
 
@@ -99,14 +100,14 @@ public class VkApiClient : IVkApiClient
 
         if (postResult?.WallPostError != null)
             throw new VkApiException(postResult.WallPostError.ErrorCode, postResult.WallPostError.ErrorMessage);
-        
+
         if (postResult?.Response?.Items == null)
             return new VkPosts()
             {
                 Posts = new List<WallPost>(),
                 Count = 0
             };
-        
+
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var t in postResult?.Response?.Items)
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
@@ -119,6 +120,7 @@ public class VkApiClient : IVkApiClient
 
         return testResult;
     }
+
 
     private WallPost MapPostDtoToWallPost(PostDto t)
     {
@@ -139,7 +141,7 @@ public class VkApiClient : IVkApiClient
 
         foreach (var attachment in t.Attachments)
         {
-            var attachments = new Attachment
+            var attachments = new Domain.Common.Attachment
             {
                 Type = attachment.Type,
             };
@@ -147,30 +149,30 @@ public class VkApiClient : IVkApiClient
             switch (attachments.Type)
             {
                 case "photo":
-                {
-                    attachments.Photo.AlbumId = attachment.Photo.AlbumId;
-                    attachments.Photo.Date = attachment.Photo.Date;
-                    attachments.Photo.Id = attachment.Photo.Id;
-                    attachments.Photo.OwnerId = attachment.Photo.OwnerId;
-                    attachments.Photo.AccessKey = attachment.Photo.AccessKey;
-                    attachments.Photo.Text = attachment.Photo.Text;
-                    attachments.Photo.UserId = attachment.Photo.UserId;
-
-                    for (int k = 0; k < attachment.Photo.Sizes.Count; k++)
                     {
-                        var size = new Size
+                        attachments.Photo.AlbumId = attachment.Photo.AlbumId;
+                        attachments.Photo.Date = attachment.Photo.Date;
+                        attachments.Photo.Id = attachment.Photo.Id;
+                        attachments.Photo.OwnerId = attachment.Photo.OwnerId;
+                        attachments.Photo.AccessKey = attachment.Photo.AccessKey;
+                        attachments.Photo.Text = attachment.Photo.Text;
+                        attachments.Photo.UserId = attachment.Photo.UserId;
+
+                        for (int k = 0; k < attachment.Photo.Sizes.Count; k++)
                         {
-                            Height = attachment.Photo.Sizes[k].Height,
-                            Width = attachment.Photo.Sizes[k].Width,
-                            Type = attachment.Photo.Sizes[k].Type,
-                            Url = attachment.Photo.Sizes[k].Url,
-                        };
+                            var size = new Domain.Common.Size
+                            {
+                                Height = attachment.Photo.Sizes[k].Height,
+                                Width = attachment.Photo.Sizes[k].Width,
+                                Type = attachment.Photo.Sizes[k].Type,
+                                Url = attachment.Photo.Sizes[k].Url,
+                            };
 
-                        attachments.Photo.Sizes.Add(size);
+                            attachments.Photo.Sizes.Add(size);
+                        }
+
+                        break;
                     }
-
-                    break;
-                }
                 case "link":
                     attachments.Link.Url = attachment.Link.Url;
                     attachments.Link.Caption = attachment.Link.Caption;
@@ -190,90 +192,90 @@ public class VkApiClient : IVkApiClient
                     attachments.Doc.AccessKey = attachment.Doc.AccessKey;
                     break;
                 case "album":
-                {
-                    attachments.Album.Created = attachment.Album.Created;
-                    attachments.Album.Id = attachment.Album.Id;
-                    attachments.Album.OwnerId = attachment.Album.OwnerId;
-                    attachments.Album.Size = attachment.Album.Size;
-                    attachments.Album.Title = attachment.Album.Title;
-                    attachments.Album.Updated = attachment.Album.Updated;
-                    attachments.Album.Description = attachment.Album.Description;
-
-                    attachments.Album.Thumb.AlbumId = attachment.Album.Thumb.AlbumId;
-                    attachments.Album.Thumb.Date = attachment.Album.Thumb.Date;
-                    attachments.Album.Thumb.Id = attachment.Album.Thumb.Id;
-                    attachments.Album.Thumb.OwnerId = attachment.Album.Thumb.OwnerId;
-                    attachments.Album.Thumb.AccessKey = attachment.Album.Thumb.AccessKey;
-                    attachments.Album.Thumb.Text = attachment.Album.Thumb.Text;
-                    attachments.Album.Thumb.UserId = attachment.Album.Thumb.UserId;
-                    attachments.Album.Thumb.WebViewToken = attachment.Album.Thumb.WebViewToken;
-                    attachments.Album.Thumb.HasTags = attachment.Album.Thumb.HasTags;
-
-                    for (int k = 0; k < attachment.Album.Thumb.Sizes.Count; k++)
                     {
-                        var size = new Size
+                        attachments.Album.Created = attachment.Album.Created;
+                        attachments.Album.Id = attachment.Album.Id;
+                        attachments.Album.OwnerId = attachment.Album.OwnerId;
+                        attachments.Album.Size = attachment.Album.Size;
+                        attachments.Album.Title = attachment.Album.Title;
+                        attachments.Album.Updated = attachment.Album.Updated;
+                        attachments.Album.Description = attachment.Album.Description;
+
+                        attachments.Album.Thumb.AlbumId = attachment.Album.Thumb.AlbumId;
+                        attachments.Album.Thumb.Date = attachment.Album.Thumb.Date;
+                        attachments.Album.Thumb.Id = attachment.Album.Thumb.Id;
+                        attachments.Album.Thumb.OwnerId = attachment.Album.Thumb.OwnerId;
+                        attachments.Album.Thumb.AccessKey = attachment.Album.Thumb.AccessKey;
+                        attachments.Album.Thumb.Text = attachment.Album.Thumb.Text;
+                        attachments.Album.Thumb.UserId = attachment.Album.Thumb.UserId;
+                        attachments.Album.Thumb.WebViewToken = attachment.Album.Thumb.WebViewToken;
+                        attachments.Album.Thumb.HasTags = attachment.Album.Thumb.HasTags;
+
+                        for (int k = 0; k < attachment.Album.Thumb.Sizes.Count; k++)
                         {
-                            Height = attachment.Album.Thumb.Sizes[k].Height,
-                            Width = attachment.Album.Thumb.Sizes[k].Width,
-                            Type = attachment.Album.Thumb.Sizes[k].Type,
-                            Url = attachment.Album.Thumb.Sizes[k].Url,
-                        };
+                            var size = new Domain.Common.Size
+                            {
+                                Height = attachment.Album.Thumb.Sizes[k].Height,
+                                Width = attachment.Album.Thumb.Sizes[k].Width,
+                                Type = attachment.Album.Thumb.Sizes[k].Type,
+                                Url = attachment.Album.Thumb.Sizes[k].Url,
+                            };
 
-                        attachments.Album.Thumb.Sizes.Add(size);
+                            attachments.Album.Thumb.Sizes.Add(size);
+                        }
+
+                        break;
                     }
-
-                    break;
-                }
                 case "video":
-                {
-                    attachments.Video.Id = attachment.Video.Id;
-                    attachments.Video.OwnerId = attachment.Video.OwnerId;
-                    attachments.Video.Title = attachment.Video.Title;
-                    attachments.Video.Description = attachment.Video.Description;
-                    attachments.Video.Duration = attachment.Video.Duration;
-                    attachments.Video.Date = attachment.Video.Date;
-                    attachments.Video.AddingDate = attachment.Video.AddingDate;
-                    attachments.Video.Views = attachment.Video.Views;
-                    attachments.Video.ResponseType = attachment.Video.ResponseType;
-                    attachments.Video.AccessKey = attachment.Video.AccessKey;
-                    attachments.Video.CanLike = attachment.Video.CanLike;
-                    attachments.Video.CanRepost = attachment.Video.CanRepost;
-                    attachments.Video.CanSubscribe = attachment.Video.CanSubscribe;
-                    attachments.Video.CanAddToFaves = attachment.Video.CanAddToFaves;
-                    attachments.Video.CanAdd = attachment.Video.CanAdd;
-                    attachments.Video.Comments = attachment.Video.Comments;
-                    attachments.Video.TrackCode = attachment.Video.TrackCode;
-                    attachments.Video.Type = attachment.Video.Type;
-                    attachments.Video.Platform = attachment.Video.Platform;
-                    attachments.Video.CanDislike = attachment.Video.CanDislike;
-
-                    for (int k = 0; k < attachment.Video.Images.Count; k++)
                     {
-                        var image = new Image
+                        attachments.Video.Id = attachment.Video.Id;
+                        attachments.Video.OwnerId = attachment.Video.OwnerId;
+                        attachments.Video.Title = attachment.Video.Title;
+                        attachments.Video.Description = attachment.Video.Description;
+                        attachments.Video.Duration = attachment.Video.Duration;
+                        attachments.Video.Date = attachment.Video.Date;
+                        attachments.Video.AddingDate = attachment.Video.AddingDate;
+                        attachments.Video.Views = attachment.Video.Views;
+                        attachments.Video.ResponseType = attachment.Video.ResponseType;
+                        attachments.Video.AccessKey = attachment.Video.AccessKey;
+                        attachments.Video.CanLike = attachment.Video.CanLike;
+                        attachments.Video.CanRepost = attachment.Video.CanRepost;
+                        attachments.Video.CanSubscribe = attachment.Video.CanSubscribe;
+                        attachments.Video.CanAddToFaves = attachment.Video.CanAddToFaves;
+                        attachments.Video.CanAdd = attachment.Video.CanAdd;
+                        attachments.Video.Comments = attachment.Video.Comments;
+                        attachments.Video.TrackCode = attachment.Video.TrackCode;
+                        attachments.Video.Type = attachment.Video.Type;
+                        attachments.Video.Platform = attachment.Video.Platform;
+                        attachments.Video.CanDislike = attachment.Video.CanDislike;
+
+                        for (int k = 0; k < attachment.Video.Images.Count; k++)
                         {
-                            Height = attachment.Video.Images[k].Height,
-                            Width = attachment.Video.Images[k].Width,
-                            WithPadding = attachment.Video.Images[k].WithPadding,
-                            Url = attachment.Video.Images[k].Url,
-                        };
+                            var image = new Domain.Common.Image
+                            {
+                                Height = attachment.Video.Images[k].Height,
+                                Width = attachment.Video.Images[k].Width,
+                                WithPadding = attachment.Video.Images[k].WithPadding,
+                                Url = attachment.Video.Images[k].Url,
+                            };
 
-                        attachments.Video.Images.Add(image);
-                    }
+                            attachments.Video.Images.Add(image);
+                        }
 
-                    for (int k = 0; k < attachment.Video.FirstFrames.Count; k++)
-                    {
-                        var firstFrame = new FirstFrame
+                        for (int k = 0; k < attachment.Video.FirstFrames.Count; k++)
                         {
-                            Height = attachment.Video.FirstFrames[k].Height,
-                            Width = attachment.Video.FirstFrames[k].Width,
-                            Url = attachment.Video.FirstFrames[k].Url,
-                        };
+                            var firstFrame = new Domain.Common.FirstFrame
+                            {
+                                Height = attachment.Video.FirstFrames[k].Height,
+                                Width = attachment.Video.FirstFrames[k].Width,
+                                Url = attachment.Video.FirstFrames[k].Url,
+                            };
 
-                        attachments.Video.FirstFrames.Add(firstFrame);
+                            attachments.Video.FirstFrames.Add(firstFrame);
+                        }
+
+                        break;
                     }
-
-                    break;
-                }
                 case "event":
                     attachments.Event.Id = attachment.Event.Id;
                     attachments.Event.EventStartDateTime = attachment.Event.EventStartDateTime;
@@ -289,13 +291,13 @@ public class VkApiClient : IVkApiClient
         }
 
         foreach (var copyPost in t.CopyHistory.Select(copy => new WallPost()
-                 {
-                     Id = copy.Id,
-                     SourceId = Math.Abs(copy.OwnerId),
-                     PostText = copy.Text,
-                     CreatedAt = DateTimeOffset.FromUnixTimeSeconds(copy.Date),
-                     PostType = GetPostTypeFromString(copy.Type),
-                 }))
+        {
+            Id = copy.Id,
+            SourceId = Math.Abs(copy.OwnerId),
+            PostText = copy.Text,
+            CreatedAt = DateTimeOffset.FromUnixTimeSeconds(copy.Date),
+            PostType = GetPostTypeFromString(copy.Type),
+        }))
         {
             wallPost.InnerPosts.Add(copyPost);
         }
@@ -313,6 +315,28 @@ public class VkApiClient : IVkApiClient
             "postpone" => WallPostTypes.Postpone,
             "suggest" => WallPostTypes.Suggest,
             _ => WallPostTypes.Unknown
+        };
+    }
+
+    private VkGroupTypes GetGroupTypeFromString(string groupType)
+    {
+        return groupType switch
+        {
+            "group" => VkGroupTypes.Group,
+            "page" => VkGroupTypes.Page,
+            "event" => VkGroupTypes.Event,
+            _ => throw new NotImplementedException()
+        };
+    }
+
+    private AccessTypes GetAccessTypeFromInt(int accessType)
+    {
+        return accessType switch
+        {
+            0 => AccessTypes.Accessible,
+            1 => AccessTypes.Inaccessible,
+            2 => AccessTypes.Private,
+            _ => throw new NotImplementedException()
         };
     }
 }

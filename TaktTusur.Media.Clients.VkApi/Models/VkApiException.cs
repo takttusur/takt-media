@@ -2,11 +2,14 @@
 {
     public class VkApiException: Exception
     {
-        public int ErrorCode {get; set;}
-        
         public VkApiException(int errorCode, string message) : base(message)
         {
             ErrorCode = errorCode;
         }
+
+        /// <summary>
+        /// Код ошибки.
+        /// </summary>
+        public int ErrorCode {get; set;}
     }
 }

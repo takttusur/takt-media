@@ -3,12 +3,12 @@
     public class VkPosts
     {
         /// <summary>
-        /// Список запрошенных записей
+        /// Полученные записи.
         /// </summary>
         public List<WallPost> Posts { get; set; } = new List<WallPost>();
 
         /// <summary>
-        /// Общее количество записей в группе/событии, который подходят под фильтр
+        /// Количество записей сообщества/события, подходящих под фильтр.
         /// </summary>
         public int Count { get; set; }
     }

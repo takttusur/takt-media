@@ -1,51 +1,55 @@
-﻿using TaktTusur.Media.Clients.VkApi.WallByIdResponse;
+﻿using TaktTusur.Media.Clients.VkApi.Models.Enums;
+using TaktTusur.Media.Domain.Common;
 
 namespace TaktTusur.Media.Clients.VkApi.Models
 {
+    /// <summary>
+    /// Запись на стене сообщества.
+    /// </summary>
     public class WallPost
     {
         /// <summary>
-        /// Id поста.
+        /// Идентификатор записи.
         /// </summary>
         public long Id { get; set; }
-        
+
         /// <summary>
-        /// Id источника поста(группа, пользователь, мероприятие)
+        /// Идентификатор владельца стены, на которой размещена запись.
         /// </summary>
         public long SourceId { get; set; }
 
         /// <summary>
-        /// Возвращает и задает дату и время создания записи.
+        /// Время публикации записи.
         /// </summary>
         public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>
-        /// Возвращает и задает источник материала записи.
+        /// Источник материала записи.
         /// </summary>
         public Copyrights PostCopyrightNotes { get; set; } = new Copyrights();
 
         /// <summary>
-        /// Возвращает и задает тип записи.
+        /// Тип записи.
         /// </summary>
         public WallPostTypes PostType { get; set; }
 
         /// <summary>
-        /// Возвращает и задает массив объектов, соответствующих медиаресурсам, прикреплённым к записи.
+        /// Массив объектов, соответствующих медиаресурсам, прикреплённым к записи.
         /// </summary>
         public List<Attachment> PostAttachment { get; set; } = new List<Attachment>();
 
         /// <summary>
-        /// Возвращает и задает текст записи.
+        /// Текст записи.
         /// </summary>
         public string PostText { get; set; }
 
         /// <summary>
-        /// Возвращает и задает URL-ссылку на данную запись.
+        /// URL записи.
         /// </summary>
         public string PostURL { get; set; }
 
         /// <summary>
-        /// Если запись является репостом, то тут будет цепочка репостов.
+        /// Коллекция записей (если исходную запись репостили).
         /// </summary>
         public List<WallPost> InnerPosts { get; set; } = new List<WallPost>();
     }
