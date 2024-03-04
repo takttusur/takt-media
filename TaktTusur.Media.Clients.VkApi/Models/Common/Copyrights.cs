@@ -1,4 +1,4 @@
-﻿namespace TaktTusur.Media.Domain.Common
+﻿namespace TaktTusur.Media.Clients.VkApi.Models.Common
 {
     public class Copyrights
     {

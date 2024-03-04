@@ -4,6 +4,7 @@
     {
         Accessible,
         Inaccessible,
-        Private
+        Private,
+        Unknown
     }
 }

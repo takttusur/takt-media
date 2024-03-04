@@ -4,6 +4,7 @@
     {
         Group,
         Page,
-        Event
+        Event,
+        Unknown
     }
 }

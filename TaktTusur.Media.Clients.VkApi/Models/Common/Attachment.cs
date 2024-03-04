@@ -1,4 +1,4 @@
-﻿namespace TaktTusur.Media.Domain.Common
+﻿namespace TaktTusur.Media.Clients.VkApi.Models.Common
 {
     public class Attachment
     {
@@ -14,6 +14,6 @@
 
         public Video Video { get; set; } = new Video();
 
-        public Event Event { get; set; } = new Event();
+        public VkEvent Event { get; set; } = new VkEvent();
     }
 }

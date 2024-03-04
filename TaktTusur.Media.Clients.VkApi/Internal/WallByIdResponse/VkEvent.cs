@@ -2,7 +2,7 @@
 
 namespace TaktTusur.Media.Clients.VkApi.Internal.WallByIdResponse
 {
-    internal class Event
+    internal class VkEvent
     {
         [JsonPropertyName("id")]
         public int Id { get; set; }

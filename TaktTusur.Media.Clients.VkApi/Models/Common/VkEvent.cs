@@ -1,6 +1,6 @@
-﻿namespace TaktTusur.Media.Domain.Common
+﻿namespace TaktTusur.Media.Clients.VkApi.Models.Common
 {
-    public class Event
+    public class VkEvent
     {
         public int Id { get; set; }
 

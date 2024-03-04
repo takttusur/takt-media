@@ -1,8 +1,8 @@
-﻿namespace TaktTusur.Media.Domain.Common
+﻿namespace TaktTusur.Media.Clients.VkApi.Models.Common
 {
-    public class Photo
+    public class Thumb
     {
-        public int? AlbumId { get; set; }
+        public int AlbumId { get; set; }
 
         public int Date { get; set; }
 
@@ -12,7 +12,7 @@
 
         public string AccessKey { get; set; }
 
-        public List<Size> Sizes { get; set; } = new List<Size>();
+        public List<Size> Sizes { get; set; }
 
         public string Text { get; set; }
 

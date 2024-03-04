@@ -1,5 +1,5 @@
 ﻿using TaktTusur.Media.Clients.VkApi.Models.Enums;
-using TaktTusur.Media.Domain.Common;
+using TaktTusur.Media.Clients.VkApi.Models.Common;
 
 namespace TaktTusur.Media.Clients.VkApi.Models
 {

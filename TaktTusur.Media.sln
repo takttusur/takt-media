@@ -19,7 +19,7 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaktTusur.Media.Clients.VkApi.Tests", "TaktTusur.Media.Clients.VkApi.Tests\TaktTusur.Media.Clients.VkApi.Tests.csproj", "{2018E6C0-542D-4E44-9D70-3AA7BABADAEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaktTusur.Media.Infrastructure.Tests", "TaktTusur.Media.Infrastructure.Tests\TaktTusur.Media.Infrastructure.Tests.csproj", "{FA4441FF-1BB0-4352-AB64-2A866BA6DCFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaktTusur.Media.Infrastructure.Tests", "TaktTusur.Media.Infrastructure.Tests\TaktTusur.Media.Infrastructure.Tests.csproj", "{FA4441FF-1BB0-4352-AB64-2A866BA6DCFA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

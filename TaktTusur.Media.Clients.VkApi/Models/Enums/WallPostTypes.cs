@@ -1,7 +1,7 @@
 namespace TaktTusur.Media.Clients.VkApi.Models.Enums;
 
 /// <summary>
-/// Типы записей на стене сообщества.
+/// РўРёРїС‹ Р·Р°РїРёСЃРµР№ РЅР° СЃС‚РµРЅРµ СЃРѕРѕР±С‰РµСЃС‚РІР°.
 /// </summary>
 public enum WallPostTypes
 {
@@ -11,4 +11,4 @@ public enum WallPostTypes
     Reply = 2,
     Postpone = 3,
     Suggest = 4
-}
+}	

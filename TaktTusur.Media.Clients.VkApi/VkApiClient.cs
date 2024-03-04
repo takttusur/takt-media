@@ -31,7 +31,7 @@ public class VkApiClient : IVkApiClient
     /// Запрашивает информацию о сообществе.
     /// </summary>
     /// <param name="groupId">Идентификатор сообщества.</param>
-    /// <param name="cancellationToken">Ключ доступа.</param>
+    /// <param name="cancellationToken">Маркер отмены.</param>
     /// <exception cref="VkApiException"></exception>
     public async Task<VkGroupInfo> GetGroupInfoAsync(string groupId, CancellationToken cancellationToken)
     {
@@ -141,7 +141,7 @@ public class VkApiClient : IVkApiClient
 
         foreach (var attachment in t.Attachments)
         {
-            var attachments = new Domain.Common.Attachment
+            var attachments = new Models.Common.Attachment
             {
                 Type = attachment.Type,
             };
@@ -160,7 +160,7 @@ public class VkApiClient : IVkApiClient
 
                         for (int k = 0; k < attachment.Photo.Sizes.Count; k++)
                         {
-                            var size = new Domain.Common.Size
+                            var size = new Models.Common.Size
                             {
                                 Height = attachment.Photo.Sizes[k].Height,
                                 Width = attachment.Photo.Sizes[k].Width,
@@ -213,7 +213,7 @@ public class VkApiClient : IVkApiClient
 
                         for (int k = 0; k < attachment.Album.Thumb.Sizes.Count; k++)
                         {
-                            var size = new Domain.Common.Size
+                            var size = new Models.Common.Size
                             {
                                 Height = attachment.Album.Thumb.Sizes[k].Height,
                                 Width = attachment.Album.Thumb.Sizes[k].Width,
@@ -251,7 +251,7 @@ public class VkApiClient : IVkApiClient
 
                         for (int k = 0; k < attachment.Video.Images.Count; k++)
                         {
-                            var image = new Domain.Common.Image
+                            var image = new Models.Common.Image
                             {
                                 Height = attachment.Video.Images[k].Height,
                                 Width = attachment.Video.Images[k].Width,
@@ -264,7 +264,7 @@ public class VkApiClient : IVkApiClient
 
                         for (int k = 0; k < attachment.Video.FirstFrames.Count; k++)
                         {
-                            var firstFrame = new Domain.Common.FirstFrame
+                            var firstFrame = new Models.Common.FirstFrame
                             {
                                 Height = attachment.Video.FirstFrames[k].Height,
                                 Width = attachment.Video.FirstFrames[k].Width,
@@ -325,7 +325,7 @@ public class VkApiClient : IVkApiClient
             "group" => VkGroupTypes.Group,
             "page" => VkGroupTypes.Page,
             "event" => VkGroupTypes.Event,
-            _ => throw new NotImplementedException()
+            _ => VkGroupTypes.Unknown
         };
     }
 
@@ -336,7 +336,7 @@ public class VkApiClient : IVkApiClient
             0 => AccessTypes.Accessible,
             1 => AccessTypes.Inaccessible,
             2 => AccessTypes.Private,
-            _ => throw new NotImplementedException()
+            _ => AccessTypes.Unknown
         };
     }
 }

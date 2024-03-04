@@ -23,6 +23,6 @@ namespace TaktTusur.Media.Clients.VkApi.Internal.WallByIdResponse
         public Video Video { get; set; } = new Video();
 
         [JsonPropertyName("event")]
-        public Event Event { get; set; } = new Event();
+        public VkEvent Event { get; set; } = new VkEvent();
     }
 }
