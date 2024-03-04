@@ -2,9 +2,9 @@
 {
     public enum AccessTypes
     {
-        Accessible,
-        Inaccessible,
-        Private,
-        Unknown
+        Unknown = -1,
+        Accessible = 0,
+        Inaccessible = 1,
+        Private = 2
     }
 }

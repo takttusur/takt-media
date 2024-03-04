@@ -2,9 +2,9 @@
 {
     public enum VkGroupTypes
     {
-        Group,
-        Page,
-        Event,
-        Unknown
+        Unknown = -1,
+        Page = 0,
+        Group = 1,
+        Event = 2
     }
 }
