@@ -3,7 +3,7 @@ using TaktTusur.Media.BackgroundCrawling.Core.Entities;
 using TaktTusur.Media.BackgroundCrawling.Core.Exceptions;
 using TaktTusur.Media.BackgroundCrawling.Core.Interfaces;
 using TaktTusur.Media.BackgroundCrawling.Core.Settings;
-using TaktTusur.Media.Domain.News;
+using TaktTusur.Media.Core.News;
 
 namespace TaktTusur.Media.BackgroundCrawling.Core.Services;
 

@@ -1,6 +1,6 @@
 using StackExchange.Redis;
 using TaktTusur.Media.BackgroundCrawling.Infrastructure.Serializers;
-using TaktTusur.Media.Core.Events;
+using TaktTusur.Media.Domain.Events;
 
 namespace TaktTusur.Media.BackgroundCrawling.Infrastructure.RedisRepository;
 

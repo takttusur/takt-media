@@ -14,8 +14,4 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.4" />
     <PackageReference Include="Quartz.Extensions.Hosting" Version="3.8.0" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\TaktTusur.Media.BackgroundCrawling.Core\TaktTusur.Media.BackgroundCrawling.Core.csproj" />
-  </ItemGroup>
 </Project>

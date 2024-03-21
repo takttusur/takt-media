@@ -4,6 +4,7 @@ using TaktTusur.Media.Clients.VkApi.Internal.WallByIdResponse;
 using TaktTusur.Media.Clients.VkApi.Models;
 using TaktTusur.Media.Clients.VkApi.Models.Enums;
 using TaktTusur.Media.Clients.VkApi.Requests;
+using WallPostTypes = TaktTusur.Media.Clients.VkApi.Models.Enums.WallPostTypes;
 
 namespace TaktTusur.Media.Clients.VkApi;
 

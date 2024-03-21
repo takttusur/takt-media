@@ -14,6 +14,11 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.1" />
+      <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="RemoteSources\" />
     </ItemGroup>
 
 </Project>
