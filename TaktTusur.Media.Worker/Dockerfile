@@ -3,12 +3,12 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY ["TaktTusur.Media.Api/TaktTusur.Media.Worker.csproj", "TaktTusur.Media.Worker/"]
+COPY ["TaktTusur.Media.Worker/TaktTusur.Media.Worker.csproj", "TaktTusur.Media.Worker/"]
 COPY ["TaktTusur.Media.Core/TaktTusur.Media.Core.csproj", "TaktTusur.Media.Core/"]
 COPY ["TaktTusur.Media.Core.Tests/TaktTusur.Media.Core.Tests.csproj", "TaktTusur.Media.Core.Tests/"]
 COPY ["TaktTusur.Media.Infrastructure/TaktTusur.Media.Infrastructure.csproj", "TaktTusur.Media.Infrastructure/"]
 COPY ["TaktTusur.Media.Clients.VkApi/TaktTusur.Media.Clients.VkApi.csproj", "TaktTusur.Media.Clients.VkApi/"]
-RUN dotnet restore "TaktTusur.Media.Api/TaktTusur.Media.Worker.csproj"
+RUN dotnet restore "TaktTusur.Media.Worker/TaktTusur.Media.Worker.csproj"
 COPY . .
 WORKDIR "/src/TaktTusur.Media.Core.Tests"
 RUN dotnet test "TaktTusur.Media.Core.Tests.csproj"
