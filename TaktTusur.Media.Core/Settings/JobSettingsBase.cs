@@ -1,4 +1,4 @@
-namespace TaktTusur.Media.BackgroundCrawling.Core.Settings;
+namespace TaktTusur.Media.Core.Settings;
 
 /// <summary>
 /// Common settings for each job

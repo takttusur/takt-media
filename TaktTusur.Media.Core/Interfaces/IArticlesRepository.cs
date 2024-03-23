@@ -1,6 +1,6 @@
 using TaktTusur.Media.Core.News;
 
-namespace TaktTusur.Media.BackgroundCrawling.Core.Interfaces;
+namespace TaktTusur.Media.Core.Interfaces;
 
 /// <summary>
 /// The <see cref="IRepository{TEntity}"/> for <see cref="Article"/>

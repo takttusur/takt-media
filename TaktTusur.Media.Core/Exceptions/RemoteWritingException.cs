@@ -1,4 +1,4 @@
-namespace TaktTusur.Media.BackgroundCrawling.Core.Exceptions;
+namespace TaktTusur.Media.Core.Exceptions;
 
 /// <summary>
 /// Throw this, if something happened in writing process to remote resource.

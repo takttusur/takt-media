@@ -1,6 +1,6 @@
-namespace TaktTusur.Media.Domain.Events;
+using TaktTusur.Media.Core.Interfaces;
 
-using TaktTusur.Media.BackgroundCrawling.Core.Entities;
+namespace TaktTusur.Media.Core.Events;
 
 public class PublicEvent : IIdentifiable
 {

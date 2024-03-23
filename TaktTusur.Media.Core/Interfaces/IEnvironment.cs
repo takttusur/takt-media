@@ -1,4 +1,4 @@
-namespace TaktTusur.Media.BackgroundCrawling.Core.Interfaces;
+namespace TaktTusur.Media.Core.Interfaces;
 
 /// <summary>
 /// Represents environment methods.

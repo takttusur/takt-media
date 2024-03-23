@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
 
@@ -9,6 +9,7 @@
         <IsTestProject>true</IsTestProject>
       <UserSecretsId>TaktTusur.Media.Clients.VkApi.Tests-35b2d6fa-2999-47f6-b581-f3806fb37ba6</UserSecretsId>
       <OutputType>Library</OutputType>
+      <LangVersion>12</LangVersion>
   </PropertyGroup>
 
     <ItemGroup>

@@ -1,11 +1,10 @@
-using Microsoft.Extensions.Logging;
-using TaktTusur.Media.BackgroundCrawling.Core.Entities;
-using TaktTusur.Media.BackgroundCrawling.Core.Exceptions;
-using TaktTusur.Media.BackgroundCrawling.Core.Interfaces;
-using TaktTusur.Media.BackgroundCrawling.Core.Settings;
+using TaktTusur.Media.Core.Entities;
+using TaktTusur.Media.Core.Exceptions;
+using TaktTusur.Media.Core.Interfaces;
 using TaktTusur.Media.Core.News;
+using TaktTusur.Media.Core.Settings;
 
-namespace TaktTusur.Media.BackgroundCrawling.Core.Services;
+namespace TaktTusur.Media.Infrastructure.Jobs;
 
 /// <summary>
 /// The job is responsible for fetching news from source and save it to <see cref="IArticlesRepository"/>
@@ -40,7 +39,7 @@ public class NewsFetchingAsyncJob : IAsyncJob
 		_logger = logger;
 	}
 
-	public async Task<JobResult> Execute(CancellationToken token)
+	public async Task<JobResult> ExecuteAsync(CancellationToken token)
 	{
 		if (!_settings.IsEnabled)
 		{
@@ -102,7 +101,7 @@ public class NewsFetchingAsyncJob : IAsyncJob
 		if (articles.Count > _settings.MaxArticlesCount)
 		{
 			articles = articles
-				.OrderBy(a => a.OriginalLastUpdated)
+				.OrderBy(a => a.OriginalUpdatedAt)
 				.Take(_settings.MaxArticlesCount)
 				.ToList();
 		}
@@ -114,7 +113,7 @@ public class NewsFetchingAsyncJob : IAsyncJob
 		var counter = 0;
 		foreach (var article in articles)
 		{
-			if (string.IsNullOrEmpty(article.OriginalReference))
+			if (string.IsNullOrEmpty(article.OriginalId))
 			{
 				_brokenArticles.Enqueue(article);
 				continue;
@@ -142,9 +141,9 @@ public class NewsFetchingAsyncJob : IAsyncJob
 	private bool TryUpdateExistingArticle(Article remoteArticle)
 	{
 		// OriginalReference was verified previously
-		var localArticle = _articlesRepository.GetByOriginalReference(remoteArticle.OriginalReference!);
+		var localArticle = _articlesRepository.GetByOriginalId(remoteArticle.OriginalId!, remoteArticle.OriginalSource!);
 		if (localArticle == null) return false;
-		localArticle.OriginalLastUpdated = remoteArticle.OriginalLastUpdated;
+		localArticle.OriginalUpdatedAt = remoteArticle.OriginalUpdatedAt;
 		localArticle.Text =
 			_textTransformer.MakeShorter(remoteArticle.Text, _settings.MaxSymbolsCount, _settings.MaxParagraphCount);
 		localArticle.LastUpdated = _environment.GetCurrentDateTime();

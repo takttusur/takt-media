@@ -1,4 +1,4 @@
-namespace TaktTusur.Media.BackgroundCrawling.Core.Settings;
+namespace TaktTusur.Media.Core.Settings;
 
 /// <summary>
 /// Settings for <see cref="NewsFetchingAsyncJob"/>

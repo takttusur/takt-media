@@ -1,8 +1,7 @@
-using Microsoft.Extensions.DependencyInjection;
-using TaktTusur.Media.BackgroundCrawling.Core.Interfaces;
+using TaktTusur.Media.Core.Interfaces;
 using TaktTusur.Media.Core.News;
 
-namespace TaktTusur.Media.BackgroundCrawling.Infrastructure.FakeImplementations;
+namespace TaktTusur.Media.Infrastructure.FakeImplementations;
 
 public static class FakeExtensions
 {

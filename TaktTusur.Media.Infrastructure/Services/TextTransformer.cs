@@ -1,6 +1,6 @@
-using TaktTusur.Media.BackgroundCrawling.Core.Interfaces;
+using TaktTusur.Media.Core.Interfaces;
 
-namespace TaktTusur.Media.BackgroundCrawling.Infrastructure.Services;
+namespace TaktTusur.Media.Infrastructure.Services;
 
 public class TextTransformer : ITextTransformer
 {

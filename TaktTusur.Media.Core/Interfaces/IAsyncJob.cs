@@ -1,6 +1,6 @@
-using TaktTusur.Media.BackgroundCrawling.Core.Entities;
+using TaktTusur.Media.Core.Entities;
 
-namespace TaktTusur.Media.BackgroundCrawling.Core.Interfaces;
+namespace TaktTusur.Media.Core.Interfaces;
 
 /// <summary>
 /// Describes asynchronous background job. 

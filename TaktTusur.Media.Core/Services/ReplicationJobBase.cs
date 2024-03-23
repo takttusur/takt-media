@@ -1,11 +1,10 @@
 using Microsoft.Extensions.Logging;
-using TaktTusur.Media.BackgroundCrawling.Core.Entities;
-using TaktTusur.Media.BackgroundCrawling.Core.Exceptions;
-using TaktTusur.Media.BackgroundCrawling.Core.Interfaces;
-using TaktTusur.Media.BackgroundCrawling.Core.Settings;
+using TaktTusur.Media.Core.Entities;
+using TaktTusur.Media.Core.Exceptions;
 using TaktTusur.Media.Core.Interfaces;
+using TaktTusur.Media.Core.Settings;
 
-namespace TaktTusur.Media.BackgroundCrawling.Core.Services;
+namespace TaktTusur.Media.Core.Services;
 
 /// <summary>
 /// Base job implementation for items replication from remote resources.

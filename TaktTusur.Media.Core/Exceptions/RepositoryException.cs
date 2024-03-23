@@ -1,6 +1,6 @@
-using TaktTusur.Media.BackgroundCrawling.Core.Interfaces;
+using TaktTusur.Media.Core.Interfaces;
 
-namespace TaktTusur.Media.BackgroundCrawling.Core.Exceptions;
+namespace TaktTusur.Media.Core.Exceptions;
 
 /// <summary>
 /// Exception describes an error which is related with <see cref="IRepository{TEntity}"/>

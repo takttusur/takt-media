@@ -1,7 +1,7 @@
-using TaktTusur.Media.BackgroundCrawling.Core.Interfaces;
+using TaktTusur.Media.Core.Interfaces;
 using TaktTusur.Media.Core.News;
 
-namespace TaktTusur.Media.BackgroundCrawling.Infrastructure.FakeImplementations;
+namespace TaktTusur.Media.Infrastructure.FakeImplementations;
 
 /// <summary>
 /// Generates fake articles, to don't use real remote resource.

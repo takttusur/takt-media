@@ -4,7 +4,6 @@ using TaktTusur.Media.Clients.VkApi.Internal.WallByIdResponse;
 using TaktTusur.Media.Clients.VkApi.Models;
 using TaktTusur.Media.Clients.VkApi.Models.Enums;
 using TaktTusur.Media.Clients.VkApi.Requests;
-using WallPostTypes = TaktTusur.Media.Clients.VkApi.Models.Enums.WallPostTypes;
 
 namespace TaktTusur.Media.Clients.VkApi;
 
@@ -95,7 +94,7 @@ public class VkApiClient : IVkApiClient
             Extended = 1
         };
 
-        var testResult = new VkPost();
+        var testResult = new VkPosts();
         var client = new RestClient(_restClientOptions);
         var postResult = await client.GetJsonAsync<WallPostByIdResponse>("wall.get", wallRequest, cancellationToken);
 
@@ -109,9 +108,7 @@ public class VkApiClient : IVkApiClient
                 Count = 0
             };
 
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var t in postResult?.Response?.Items)
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
         {
             var wallPost = MapPostDtoToWallPost(t);
 
@@ -305,7 +302,7 @@ public class VkApiClient : IVkApiClient
 
         return wallPost;
     }
-
+    
     private WallPostTypes GetPostTypeFromString(string postType)
     {
         return postType switch

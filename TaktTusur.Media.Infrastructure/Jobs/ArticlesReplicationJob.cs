@@ -1,11 +1,10 @@
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using TaktTusur.Media.BackgroundCrawling.Core.Interfaces;
-using TaktTusur.Media.BackgroundCrawling.Core.Services;
-using TaktTusur.Media.BackgroundCrawling.Core.Settings;
+using TaktTusur.Media.Core.Interfaces;
 using TaktTusur.Media.Core.News;
+using TaktTusur.Media.Core.Services;
+using TaktTusur.Media.Core.Settings;
 
-namespace TaktTusur.Media.BackgroundCrawling.Infrastructure.Jobs;
+namespace TaktTusur.Media.Infrastructure.Jobs;
 
 public class ArticlesReplicationJob(
 	IRemoteSource<Article> remoteSource,

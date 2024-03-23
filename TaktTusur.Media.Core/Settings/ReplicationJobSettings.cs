@@ -1,4 +1,4 @@
-namespace TaktTusur.Media.BackgroundCrawling.Core.Settings;
+namespace TaktTusur.Media.Core.Settings;
 
 public class ReplicationJobSettings : JobSettingsBase
 {

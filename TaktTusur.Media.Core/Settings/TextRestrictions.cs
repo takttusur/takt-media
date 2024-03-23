@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace TaktTusur.Media.BackgroundCrawling.Core.Settings;
+namespace TaktTusur.Media.Core.Settings;
 
 public class TextRestrictions
 {

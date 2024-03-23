@@ -1,4 +1,4 @@
-namespace TaktTusur.Media.BackgroundCrawling.Infrastructure.Serializers;
+namespace TaktTusur.Media.Infrastructure.Serializers;
 
 public interface IJsonSerializer<T>
 {

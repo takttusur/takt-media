@@ -1,8 +1,8 @@
 using StackExchange.Redis;
-using TaktTusur.Media.BackgroundCrawling.Infrastructure.Serializers;
-using TaktTusur.Media.Domain.Events;
+using TaktTusur.Media.Core.Events;
+using TaktTusur.Media.Infrastructure.Serializers;
 
-namespace TaktTusur.Media.BackgroundCrawling.Infrastructure.RedisRepository;
+namespace TaktTusur.Media.Infrastructure.RedisRepository;
 
 public class PublicEventsRedisRepository(
 	IConnectionMultiplexer redisConnection,

@@ -1,4 +1,4 @@
-namespace TaktTusur.Media.BackgroundCrawling.Core.Entities;
+namespace TaktTusur.Media.Core.Interfaces;
 
 public interface IIdentifiable
 {

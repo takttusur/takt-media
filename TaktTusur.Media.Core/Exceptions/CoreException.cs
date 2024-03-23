@@ -1,4 +1,4 @@
-namespace TaktTusur.Media.BackgroundCrawling.Core.Exceptions;
+namespace TaktTusur.Media.Core.Exceptions;
 
 /// <summary>
 /// The core exception for project. Please, don't throw this.

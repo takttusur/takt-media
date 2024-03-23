@@ -1,8 +1,7 @@
-using TaktTusur.Media.BackgroundCrawling.Core.Entities;
-using TaktTusur.Media.BackgroundCrawling.Core.Exceptions;
-using TaktTusur.Media.BackgroundCrawling.Core.Interfaces;
+using TaktTusur.Media.Core.Exceptions;
+using TaktTusur.Media.Core.Interfaces;
 
-namespace TaktTusur.Media.BackgroundCrawling.Infrastructure.FakeImplementations;
+namespace TaktTusur.Media.Infrastructure.FakeImplementations;
 
 public class FakeRepository<T> : IRepository<T> where T : IIdentifiable
 {

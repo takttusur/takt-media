@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace TaktTusur.Media.BackgroundCrawling.Infrastructure.Serializers;
+namespace TaktTusur.Media.Infrastructure.Serializers;
 
 public class CommonJsonSerializer<T> : IJsonSerializer<T>
 {

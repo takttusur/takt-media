@@ -1,4 +1,4 @@
-namespace TaktTusur.Media.BackgroundCrawling.Core.Entities;
+namespace TaktTusur.Media.Core.Entities;
 
 /// <summary>
 /// No value result of Job.

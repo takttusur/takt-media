@@ -1,12 +1,11 @@
 using StackExchange.Redis;
-using TaktTusur.Media.BackgroundCrawling.Core.Entities;
-using TaktTusur.Media.BackgroundCrawling.Core.Interfaces;
-using TaktTusur.Media.BackgroundCrawling.Infrastructure.Serializers;
+using TaktTusur.Media.Core.Interfaces;
+using TaktTusur.Media.Infrastructure.Serializers;
 
-namespace TaktTusur.Media.BackgroundCrawling.Infrastructure.RedisRepository;
+namespace TaktTusur.Media.Infrastructure.RedisRepository;
 
 /// <summary>
-/// Base <see cref="IRepository{TEntity}"/> implementation using Redis cache.
+/// Base <see cref="Interfaces.IRepository{TEntity}"/> implementation using Redis cache.
 /// Non thread safe.
 /// Use transactions approach, don't forget to call Save finally.
 /// </summary>

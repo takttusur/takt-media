@@ -1,6 +1,4 @@
-using TaktTusur.Media.BackgroundCrawling.Core.Entities;
-
-namespace TaktTusur.Media.BackgroundCrawling.Core.Interfaces;
+namespace TaktTusur.Media.Core.Interfaces;
 
 /// <summary>
 /// The local repository for objects, to store in persistent storage(database).
