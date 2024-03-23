@@ -1,5 +1,4 @@
 using Quartz;
-using TaktTusur.Media.BackgroundCrawling.Core.Interfaces;
 using TaktTusur.Media.BackgroundCrawling.Core.Services;
 using TaktTusur.Media.BackgroundCrawling.Core.Settings;
 
