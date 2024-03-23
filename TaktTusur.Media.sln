@@ -19,6 +19,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaktTusur.Media.Clients.VkA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaktTusur.Media.Infrastructure.Tests", "TaktTusur.Media.Infrastructure.Tests\TaktTusur.Media.Infrastructure.Tests.csproj", "{FA4441FF-1BB0-4352-AB64-2A866BA6DCFA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaktTusur.Media.Background.Core", "TaktTusur.Media.Background.Core\TaktTusur.Media.Background.Core.csproj", "{767D22B5-0726-411B-878B-49472371EDDA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaktTusur.Media.Background.Infrastructure", "TaktTusur.Media.Background.Infrastructure\TaktTusur.Media.Background.Infrastructure.csproj", "{7CF36185-9DED-46CC-9247-2979BA982BC9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
