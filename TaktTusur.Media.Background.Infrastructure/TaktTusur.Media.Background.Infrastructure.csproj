@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>TaktTusur.Media.BackgroundCrawling.Infrastructure</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="RemoteSources\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Aspire.StackExchange.Redis" Version="8.0.0-preview.2.23619.3" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\TaktTusur.Media.Background.Core\TaktTusur.Media.Background.Core.csproj" />
+    </ItemGroup>
+
+</Project>
