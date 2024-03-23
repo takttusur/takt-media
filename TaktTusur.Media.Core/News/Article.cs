@@ -1,4 +1,3 @@
-using TaktTusur.Media.BackgroundCrawling.Core.Entities;
 using TaktTusur.Media.Core.Interfaces;
 
 namespace TaktTusur.Media.Core.News;

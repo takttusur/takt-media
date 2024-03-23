@@ -2,5 +2,8 @@
 
 public class VkApiOptions
 {
+    /// <summary>
+    /// Ключ доступа.
+    /// </summary>
     public string Key { get; set; }
 }

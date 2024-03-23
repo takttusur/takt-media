@@ -1,51 +1,55 @@
-﻿namespace TaktTusur.Media.Clients.VkApi.Models;
+﻿using TaktTusur.Media.Clients.VkApi.Models.Enums;
+
+namespace TaktTusur.Media.Clients.VkApi.Models;
 
 public class VkGroupInfo
 {
     #region Base
 
     /// <summary>
-    /// Возвращает и задает Id сообщества.
+    /// Идентификатор сообщества.
     /// </summary>
-    public int Id { get; set; }
+    public long Id { get; set; }
 
     /// <summary>
-    /// Возвращает и задает название сообщества.
+    /// Название сообщества.
     /// </summary>
     public string Name { get; set; }
 
     /// <summary>
-    /// Возвращает и задает короткий адрес записи.
+    /// Короткий адрес.
     /// </summary>
     public string ScreenName { get; set; }
 
     /// <summary>
-    /// Возвращает и задает является ли сообщество закрытым.
+    /// Тип доступности сообщества. 
+    /// (Accessible - открытая, Inaccessible - закрытая, Private - частная)
     /// </summary>
-    public int IsClosed { get; set; }
+    public AccessTypes AccessType { get; set; }
 
     /// <summary>
-    /// Возвращает и задает тип сообщества.
+    /// Тип сообщества.
+    /// Group - группа, Page - публичная страница, Event - мероприятие
     /// </summary>
-    public string Type { get; set; }
+    public VkGroupTypes Type { get; set; }
 
     /// <summary>
-    /// Возвращает и задает URL главной фотографии с размером 50x50px.
+    /// URL главной фотографии с размером 50x50px.
     /// </summary>
     public string Photo50 { get; set; }
 
     /// <summary>
-    /// Возвращает и задает URL главной фотографии с размером 100x100px.
+    /// URL главной фотографии с размером 100x100px.
     /// </summary>
     public string Photo100 { get; set; }
 
     /// <summary>
-    /// Возвращает и задает URL главной фотографии в максимальном размере.
+    /// URL главной фотографии в максимальном размере.
     /// </summary>
     public string Photo200 { get; set; }
     
     /// <summary>
-    /// URL группы.
+    /// URL сообщества.
     /// </summary>
     public string URL { get; set; }
 
@@ -54,17 +58,17 @@ public class VkGroupInfo
     #region Optional
 
     /// <summary>
-    /// Возвращает и задает дату начала события.
+    /// Для встреч - время начала события. Для публичных страниц - дата основания.
     /// </summary>
     public DateTimeOffset? StartDateTime { get; set; }
 
     /// <summary>
-    /// Возвращает и задает дату окончания события.
+    /// Дата окончания встречи.
     /// </summary>
     public DateTimeOffset? FinishDateTime { get; set; }
 
     /// <summary>
-    /// Возвращает и задает описание группы.
+    /// Тескт описания сообщества.
     /// </summary>
     public string Description { get; set; }
     

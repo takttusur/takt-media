@@ -1,7 +1,7 @@
 using Moq;
 using TaktTusur.Media.Clients.VkApi;
 using TaktTusur.Media.Clients.VkApi.Models;
-using TaktTusur.Media.Clients.VkApi.WallByIdResponse;
+using TaktTusur.Media.Clients.VkApi.Models.Common;
 using TaktTusur.Media.Infrastructure.Analyzers;
 
 namespace TaktTusur.Media.Infrastructure.Tests.Analyzers;
@@ -21,7 +21,7 @@ public class VkAnalyzerTests
 				new Attachment
 				{
 					Type = "event",
-					Event = new Event
+					Event = new VkEvent
 					{
 						Id = 123,
 						EventStartDateTime = 1234567890
