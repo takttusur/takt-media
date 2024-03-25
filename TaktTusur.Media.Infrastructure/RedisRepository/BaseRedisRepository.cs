@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Caching.StackExchangeRedis;
 using StackExchange.Redis;
 using TaktTusur.Media.Core.Interfaces;
 using TaktTusur.Media.Infrastructure.Serializers;
@@ -49,7 +50,7 @@ public abstract class BaseRedisRepository<T> : IRepository<T> where T: IIdentifi
 
 		var key = new RedisKey(GetEntityKey(entity));
 		var value = new RedisValue(_jsonSerializer.Serialize(entity));
-
+		
 		var task = _transaction!.StringSetAsync(key, value);
 		task.ConfigureAwait(false);
 		_unprocessedChanges.Add(task);

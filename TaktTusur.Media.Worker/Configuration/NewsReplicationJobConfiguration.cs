@@ -1,9 +1,12 @@
-namespace TaktTusur.Media.Core.Settings;
+
+using TaktTusur.Media.Core.Settings;
+
+namespace TaktTusur.Media.Worker.Configuration;
 
 /// <summary>
-/// Settings for <see cref="NewsFetchingAsyncJob"/>
+/// Settings for <see cref="NewsReplicationJobConfiguration"/>
 /// </summary>
-public class NewsFetchingJobSettings : JobSettingsBase
+public class NewsReplicationJobConfiguration : JobConfigurationBase
 {
 	/// <summary>
 	/// The VK group identifier to import news

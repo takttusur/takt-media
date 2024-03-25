@@ -6,7 +6,7 @@ namespace TaktTusur.Media.Infrastructure.FakeImplementations;
 /// <summary>
 /// Generates fake articles, to don't use real remote resource.
 /// </summary>
-public class FakeArticleRemoteSource : IRemoteSource<Article>
+public class FakeArticleRemoteSource : IArticlesRemoteSource
 {
 	public const int TotalCount = 21;
 	

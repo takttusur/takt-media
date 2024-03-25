@@ -10,7 +10,7 @@ public class ArticlesReplicationJob(
 	IRemoteSource<Article> remoteSource,
 	IArticlesRepository repository,
 	ILogger<ArticlesReplicationJob> logger,
-	IOptionsSnapshot<ReplicationJobSettings> jobSettings,
+	IOptionsSnapshot<ReplicationJobConfiguration> jobSettings,
 	IOptions<TextRestrictions> textRestrictions,
 	ITextTransformer textTransformer,
 	IEnvironment environment)

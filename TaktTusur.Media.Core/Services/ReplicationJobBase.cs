@@ -22,23 +22,23 @@ public abstract class ReplicationJobBase<T> : IAsyncJob where T: IIdentifiable, 
 	
 	private readonly IRemoteSource<T> _remoteSource;
 	private readonly IRepository<T> _repository;
-	private readonly ReplicationJobSettings _jobSettings;
+	private readonly ReplicationJobConfiguration _jobConfiguration;
 	private readonly ILogger _logger;
 	private readonly Queue<T> _brokenItems = new Queue<T>();
 	
 	/// <param name="remoteSource">Remote source of entity</param>
 	/// <param name="repository">Repository for <see cref="T"/> </param>
 	/// <param name="logger">Logger</param>
-	/// <param name="jobSettings">Settings for the job, don't take it from DI</param>
+	/// <param name="jobConfiguration">Settings for the job, don't take it from DI</param>
 	protected ReplicationJobBase(
 		IRemoteSource<T> remoteSource, 
 		IRepository<T> repository,
 		ILogger logger,
-		ReplicationJobSettings jobSettings)
+		ReplicationJobConfiguration jobConfiguration)
 	{
 		_remoteSource = remoteSource;
 		_repository = repository;
-		_jobSettings = jobSettings;
+		_jobConfiguration = jobConfiguration;
 		_logger = logger;
 	}
 	
@@ -49,7 +49,7 @@ public abstract class ReplicationJobBase<T> : IAsyncJob where T: IIdentifiable, 
 	/// <returns>Job result, success or fail</returns>
 	public virtual async Task<JobResult> ExecuteAsync(CancellationToken token)
 	{
-		if (!_jobSettings.IsEnabled)
+		if (!_jobConfiguration.IsEnabled)
 		{
 			_logger.LogDebug(DisabledMsg);
 			return JobResult.SuccessResult();
@@ -171,11 +171,11 @@ public abstract class ReplicationJobBase<T> : IAsyncJob where T: IIdentifiable, 
 	private async Task FetchByOneRequest()
 	{
 		var items = await _remoteSource.GetListAsync();
-		if (items.Count > _jobSettings.MaxReplicatedItems)
+		if (items.Count > _jobConfiguration.MaxReplicatedItems)
 		{
 			items = items
 				.OrderBy(a => a.OriginalUpdatedAt)
-				.Take(_jobSettings.MaxReplicatedItems)
+				.Take(_jobConfiguration.MaxReplicatedItems)
 				.ToList();
 		}
 		await ProcessItems(items);
@@ -203,7 +203,7 @@ public abstract class ReplicationJobBase<T> : IAsyncJob where T: IIdentifiable, 
 
 			counter++;
 			
-			if (counter < _jobSettings.CommitBuffer) continue;
+			if (counter < _jobConfiguration.CommitBuffer) continue;
 			
 			await _repository.SaveAsync();
 			counter = 0;
